@@ -1,11 +1,31 @@
 Package: rgwas
-Title: What the Package Does (One Line, Title Case)
+Title: Identify Logical Combinations Of Phenotypes Associated With A Genotype In A Multi-Phenotype Genome-Wide Association Study
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Leonid", "Chindelevitch", email = "leonid.chindelevitch@pfizer.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6619-6013")),
+    person("Dmitry", "Bichko",        email = "dmitry.bichko@pfizer.com",        role = "aut"))
+Description: The goal of ReverseGWAS is to find associations between complex phenotypes and genotypes in a multi-phenotype GWAS. If we remove the word 'complex', this becomes identical to the standard GWAS problem of finding genotype-phenotype associations. If we move the word 'complex' next to 'genotypes', this becomes identical to the problem solved by a genetic risk score (GRS). In other words, analogously to a GRS, ReverseGWAS seeks combinations of phenotypes that are simultaneously associated with a SNP. Other than reversing genotype and phenotype, the key difference with a GRS is that ReverseGWAS combines the phenotypes logically.
 License: GPL (>= 3)
+Imports: 
+    admisc,
+    combinat,
+    conflicted,
+    glpkAPI,
+    gtools,
+    magrittr,
+    Matrix,
+    optparse,
+    Rcplex2,
+    slam,
+    tidyverse,
+    withr
+biocViews: 
+    BiRewire
+Suggests: 
+    ggplot2,
+    testthat
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+URL: https://github.com/bichkd/rgwas
+BugReports: https://github.com/bichkd/rgwas/issues
