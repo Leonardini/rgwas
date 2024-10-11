@@ -1,43 +1,43 @@
-### This function computes the optimum value an output shoud have in order to compare it to the actual optimum value
+#' This function computes the optimum value an output shoud have in order to compare it to the actual optimum value
 computeOptValue = function(myTab, objective, coeffsTrue, coeffsAgree, ind, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
   initTab <- matrix(0, 2, 2, dimnames = list(c("FALSE", "TRUE"), c("FALSE", "TRUE")))
   initTab[rownames(myTab), colnames(myTab)] %<>%
-    add(myTab)
+    magrittr::add(myTab)
   TP <- initTab["TRUE" , "TRUE" ]
   FP <- initTab["FALSE", "TRUE" ]
   FN <- initTab["TRUE" , "FALSE"]
   TN <- initTab["FALSE", "FALSE"]
-  checkOpt <- ifelse(objective == "agreement", sum(c(TP, FP, FN, TN) * c(TPscore, FPscore, FNscore, TNscore)), 
+  checkOpt <- ifelse(objective == "agreement", sum(c(TP, FP, FN, TN) * c(TPscore, FPscore, FNscore, TNscore)),
                    -(coeffsTrue[ind] * (TP + FP) + coeffsAgree[ind] * TP))
   output <- list(checkOpt = checkOpt, TP = TP, FP = FP, FN = FN, TN = TN)
   output
 }
 
-### This function computes the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
-### stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction
-### NOTE: It uses Daniel Ziemek's idea of combining everything into a tibble first, then assigning values as needed; it's neat!
+#' This function computes the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
+#' stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction
+#' NOTE: It uses Daniel Ziemek's idea of combining everything into a tibble first, then assigning values as needed; it's neat!
 computeStratifiedPVal = function(genotype, phenotypeC, phenotypeS, exact = FALSE, correct = FALSE) {
-  microTabs <- tibble(A = genotype, B = phenotypeC, C = phenotypeS) %>%
-    filter(!is.na(A) & !is.na(B) & !is.na(C)) %>%
-    group_by(A, B, C) %>%
-    summarize(N = n(), .groups = "keep") %>%
-    ungroup()
+  microTabs <- tibble::tibble(A = genotype, B = phenotypeC, C = phenotypeS) %>%
+    dplyr::filter(!is.na(A) & !is.na(B) & !is.na(C)) %>%
+    dplyr::group_by(A, B, C) %>%
+    dplyr::summarize(N = dplyr::n(), .groups = "keep") %>%
+    dplyr::ungroup()
   fullTabs <- array(0, c(2, 2, 2), dimnames = list(c("FALSE", "TRUE"), c("FALSE", "TRUE"), c("FALSE", "TRUE")))
   for (ind in seq_len(nrow(microTabs))) {
     curRow <- microTabs %>%
-      slice(ind)
+      dplyr::slice(ind)
     fullTabs[as.character(curRow$A), as.character(curRow$B), as.character(curRow$C)] <- curRow$N
   }
   extraStat <- log(mantelhaen.test(fullTabs, alternative = "g", exact = exact, correct = correct)$p.value)
   extraStat
 }
 
-### This function creates and solves an ILP (integer linear program) for maximizing an objective function over input phenotypes
-### The arguments are similar to the function below, except that the genotype is not supplied and phenotypes must be a matrix
-### The objVector specifies the vector of objective function values to apply to each entry of the phenotype during optimization
-### The boundValue parameter specifies a bound on the objective function; not achieving this bound makes the problem infeasible
-createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, filename = "Test.lp", boundValue = NA, 
-                                startSol = NULL, extraConstraints = NULL, API = TRUE) {
+#' This function creates and solves an ILP (integer linear program) for maximizing an objective function over input phenotypes
+#' The arguments are similar to the function below, except that the genotype is not supplied and phenotypes must be a matrix
+#' The objVector specifies the vector of objective function values to apply to each entry of the phenotype during optimization
+#' The boundValue parameter specifies a bound on the objective function; not achieving this bound makes the problem infeasible
+createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, filename = "Test.lp", boundValue = NA,
+                                extraConstraints = NULL) {
   if (length(extraConstraints) == 2 && any(is.na(extraConstraints[[1]]))) {
     return(list(usedVars = NA, optimum = NA, status = HOPELESS, time = 0, gap = NA))
   }
@@ -45,8 +45,8 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   p <- ncol(phenotypes)
   goodEntries <- which(phenotypes == ifelse(type == "CNF", 1, 0), arr.ind = TRUE)
   goodEntries %<>%
-    as_tibble %>%
-    arrange(row, col)
+    tibble::as_tibble() %>%
+    dplyr::arrange(row, col)
   N <- nrow(goodEntries)
   numVar <- K * (n + p) + n
   numConst <- K * (N + 2 * n + 2) + n
@@ -60,7 +60,8 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   lastAndRow <- lastOrRow + n * (K + 1)
   LRows <- lastAndRow + (1:K)
   FRows <- lastAndRow + K + (1:K)
-  coln <- c(paste0("U", as.vector(outer(1:K, 1:p, pasteI))), paste0("P", as.vector(outer(1:K, 1:n, pasteI))), paste0("p", 1:n))
+  coln <- c(paste0("U", as.vector(outer(1:K, 1:p, function(x, y) {paste(y, x, sep = "I")}))),
+            paste0("P", as.vector(outer(1:K, 1:n, function(x, y) {paste(y, x, sep = "I")}))), paste0("p", 1:n))
   phenoSums <- rowSums(phenotypes * ifelse(type == "CNF", 1, -1) + ifelse(type == "CNF", 0, 1))
   numNonZeros <- K * (3 * N + 4 * n + 2 * p) + n
   if (!is.null(extraConstraints)) {
@@ -73,13 +74,13 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     numSTCoeffs <- ncol(extraConstraints[[2]])
     numExtraVar <- 2 * numSeg + 3
     numVar %<>%
-      add(numExtraVar)
+      magrittr::add(numExtraVar)
     numExtraConst <- 2 * numSeg + 6
     numConst %<>%
-      add(numExtraConst)
+      magrittr::add(numExtraConst)
     numExtraNonZeros <- 2 * numSTCoeffs + 8 * numSeg + 4
     numNonZeros %<>%
-      add(numExtraNonZeros)
+      magrittr::add(numExtraNonZeros)
     coln %<>%
       c("Sum", "Total", "Z", paste0(rep("Z", numSeg), seq_len(numSeg)), paste0(rep("S", numSeg), seq_len(numSeg)))
   }
@@ -119,7 +120,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   }
   if (type == "DNF") {
     values[(3 * N + n) * K + (1:(3 * Sz + n))] %<>%
-      multiply_by(-1)
+      magrittr::multiply_by(-1)
   }
   lastRange <- numNonZeros - ifelse(!is.null(extraConstraints), numExtraNonZeros, 0) - (2 * p * K) + 1:(p * K)
   rowInds[lastRange] <- rep(LRows, p)
@@ -133,9 +134,9 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   rhs[lastAndRow + K + (1:K)] <- -1
   if (!is.null(extraConstraints)) {
     extraRange <- K * (3 * N + 4 * n + 2 * p) + n + 1:(numExtraNonZeros)
-    rowInds[extraRange] <- c(rep(lastAndRow + 2 * K + (1:2), each = numSTCoeffs), 
-                             rep(lastAndRow + 2 * K + 3, 2), 
-                             rep(lastAndRow + 2 * K + 4, numSeg), 
+    rowInds[extraRange] <- c(rep(lastAndRow + 2 * K + (1:2), each = numSTCoeffs),
+                             rep(lastAndRow + 2 * K + 3, 2),
+                             rep(lastAndRow + 2 * K + 4, numSeg),
                              rep(lastAndRow + 2 * K + 4 + seq_len(numSeg), each = 2),
                              rep(lastAndRow + 2 * K + 4 + numSeg + (1:2), each = 2 * numSeg + 1),
                              rep(lastAndRow + 2 * K + 4 + numSeg + 2 + seq_len(numSeg)))
@@ -144,21 +145,21 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     indZ <- numVar - numExtraVar + 3
     indZi <- numVar - numExtraVar + 3 + seq_len(numSeg)
     indSi <- numVar - numExtraVar + 3 + numSeg + seq_len(numSeg)
-    colInds[extraRange] <- c(pInds, indS, 
+    colInds[extraRange] <- c(pInds, indS,
                              pInds, indT,
                              indS,  indZ,
                              indZi,
-                             as.vector(matrix(rbind(indSi, indZi), ncol = 2)), ### this "interlaces" S and Z indices like zip
-                             indT, indZi, indSi, ### x-value constraint
-                             indZ, indZi, indSi, ### y-value constraint
+                             as.vector(matrix(rbind(indSi, indZi), ncol = 2)), # this "interlaces" S and Z indices like zip
+                             indT, indZi, indSi, # x-value constraint
+                             indZ, indZi, indSi, # y-value constraint
                              indSi)
-    Xvalues <- extraConstraints[[1]] %>% 
-      pull(1)
+    Xvalues <- extraConstraints[[1]] %>%
+      dplyr::pull(1)
     deltaXs <- diff(Xvalues)
-    Yvalues <- extraConstraints[[1]] %>% 
-      pull(2)
+    Yvalues <- extraConstraints[[1]] %>%
+      dplyr::pull(2)
     deltaYs <- diff(Yvalues)
-    values [extraRange] <- c(-extraConstraints[[2]][1, -1], 1, 
+    values [extraRange] <- c(-extraConstraints[[2]][1, -1], 1,
                              -extraConstraints[[2]][2, -1], 1,
                              1, -1,
                              rep(1, numSeg),
@@ -171,55 +172,26 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
       rhs[lastAndRow + 2 * K + (5:6)] <- c(-Xvalues[1], -Yvalues[1])
     }
   }
-  if (API) {
-    Control = makeControlLines(API = TRUE)
-    if (!is.na(boundValue)) {
-      numConst = numConst + 1
-      rowInds  = c(rowInds, rep(numConst, numVar))
-      colInds  = c(colInds, 1:numVar)
-      values   = c(values, fullObjVector)
-      rhs      = c(rhs, boundValue)
-    }
-    Mat = sparseMatrix(i = rowInds, j = colInds, x = values, dims = c(numConst, numVar), index1 = TRUE)
-    varTypes = rep("B", numVar)
-    constDir = rep("L", numConst)
-    if (!is.null(extraConstraints)) {
-      varTypes[(numVar - numExtraVar + 1):numVar] = c(rep("I", 2), "C", rep("B", numSeg), rep("C", numSeg))
-      constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
-    }
-    solution = Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, x0 = startSol, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
-    Rcplex.close()
-    solution$xopt %<>% 
-      set_names(coln)
-    output = extractSolutionAPI(solution)
-  } else {
-    colTypeVector <- rep(glpkAPI::GLP_BV, numVar)
-    rowTypeVector <- rep(glpkAPI::GLP_UP, numConst)
-    lowerBounds   <- rep(0, numConst)
-    if (!is.null(extraConstraints)) {
-      colTypeVector[(numVar - numExtraVar + 1):numVar] <- c(rep(glpkAPI::GLP_IV, 2), glpkAPI::GLP_CV, rep(glpkAPI::GLP_BV, numSeg), rep(glpkAPI::GLP_CV, numSeg))
-      rowTypeVector[numConst - numExtraConst + c(1, 2, 4, numSeg + 5, numSeg + 6)] <- glpkAPI::GLP_FX
-      lowerBounds[rowTypeVector == glpkAPI::GLP_FX] <- rhs[rowTypeVector == glpkAPI::GLP_FX]
-    }
-    model <- glpkAPI::initProbGLPK()
-    glpkAPI::setProbNameGLPK(model, paste(type, "for maximum agreement or covariance with genotype"))
-    glpkAPI::setObjDirGLPK(model, glpkAPI::GLP_MIN)
-    glpkAPI::addColsGLPK(model, ncols = numVar)
-    glpkAPI::setColsBndsObjCoefsGLPK(model, j = seq_len(numVar), lb = NULL, ub = NULL, obj_coef = fullObjVector, type = rep(glpkAPI::GLP_FR, numVar))
-    glpkAPI::setColsKindGLPK(model, j = seq_len(numVar), kind = colTypeVector)
-    glpkAPI::addRowsGLPK(model, nrows = numConst)
-    glpkAPI::loadMatrixGLPK(model, ne = numNonZeros, ia = rowInds, ja = colInds, ra = values)
-    glpkAPI::setRowsBndsGLPK(model, i = seq_len(numConst), lb = lowerBounds, ub = rhs, type = rowTypeVector)
-    glpkAPI::setColsNamesGLPK(model, j = seq_len(numVar), cnames = coln)
-    glpkAPI::writeLPGLPK(model, fname = filename)
-    if (!is.null(startSol)) {
-      solFname <- makeInitialSolution(startSol, filename, type, K, phenotypes)
-    } else {
-      solFname <- NULL
-    }
-    # note: the objective function is negated during the processing step
-    output <- runAndParse(filename, boundValue = boundValue, startSol = solFname)
+  Control = makeControlLines()
+  if (!is.na(boundValue)) {
+    numConst = numConst + 1
+    rowInds  = c(rowInds, rep(numConst, numVar))
+    colInds  = c(colInds, 1:numVar)
+    values   = c(values, fullObjVector)
+    rhs      = c(rhs, boundValue)
   }
+  Mat = Matrix::sparseMatrix(i = rowInds, j = colInds, x = values, dims = c(numConst, numVar), index1 = TRUE)
+  varTypes = rep("B", numVar)
+  constDir = rep("L", numConst)
+  if (!is.null(extraConstraints)) {
+    varTypes[(numVar - numExtraVar + 1):numVar] = c(rep("I", 2), "C", rep("B", numSeg), rep("C", numSeg))
+    constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
+  }
+  solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
+  Rcplex::Rcplex.close()
+  solution$xopt %<>%
+    magrittr::set_names(coln)
+  output = extractSolution(solution)
   if (!all(is.na(output$usedVars))) {
     rownames(output$usedVars) <- colnames(phenotypes)[seq_len(nrow(output$usedVars))]
   }
