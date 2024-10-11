@@ -2,7 +2,7 @@
 % Please edit documentation in R/Logical.R
 \name{computeOptValue}
 \alias{computeOptValue}
-\title{This function computes the optimum value an output shoud have in order to compare it to the actual optimum value}
+\title{Compute the optimum value an output shoud have in order to compare it to the actual optimum value}
 \usage{
 computeOptValue(
   myTab,
@@ -17,5 +17,5 @@ computeOptValue(
 )
 }
 \description{
-This function computes the optimum value an output shoud have in order to compare it to the actual optimum value
+Compute the optimum value an output shoud have in order to compare it to the actual optimum value
 }

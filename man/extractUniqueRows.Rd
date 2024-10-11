@@ -2,12 +2,12 @@
 % Please edit documentation in R/Utilities.R
 \name{extractUniqueRows}
 \alias{extractUniqueRows}
-\title{This function extracts the unique rows of a table; if repeats = TRUE, also returns the groups corresponding to each unique row
+\title{Extract the unique rows of a table; if repeats = TRUE, also returns the groups corresponding to each unique row
 Partly based on the solution at r.789695.n4.nabble.com/Count-unique-rows-columns-in-a-matrix-td844731.html}
 \usage{
 extractUniqueRows(Table, repeats = TRUE)
 }
 \description{
-This function extracts the unique rows of a table; if repeats = TRUE, also returns the groups corresponding to each unique row
+Extract the unique rows of a table; if repeats = TRUE, also returns the groups corresponding to each unique row
 Partly based on the solution at r.789695.n4.nabble.com/Count-unique-rows-columns-in-a-matrix-td844731.html
 }

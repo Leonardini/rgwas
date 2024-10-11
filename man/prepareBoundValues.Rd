@@ -2,7 +2,7 @@
 % Please edit documentation in R/Preprocess.R
 \name{prepareBoundValues}
 \alias{prepareBoundValues}
-\title{Prepares the upper cutoffs based on the input, type and objective function}
+\title{Prepare the upper cutoffs based on the input, type and objective function}
 \usage{
 prepareBoundValues(
   extremeValues,
@@ -15,5 +15,5 @@ prepareBoundValues(
 )
 }
 \description{
-Prepares the upper cutoffs based on the input, type and objective function
+Prepare the upper cutoffs based on the input, type and objective function
 }

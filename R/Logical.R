@@ -1,4 +1,4 @@
-#' This function computes the optimum value an output shoud have in order to compare it to the actual optimum value
+#' Compute the optimum value an output shoud have in order to compare it to the actual optimum value
 computeOptValue = function(myTab, objective, coeffsTrue, coeffsAgree, ind, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
   initTab <- matrix(0, 2, 2, dimnames = list(c("FALSE", "TRUE"), c("FALSE", "TRUE")))
   initTab[rownames(myTab), colnames(myTab)] %<>%
@@ -13,9 +13,8 @@ computeOptValue = function(myTab, objective, coeffsTrue, coeffsAgree, ind, TPsco
   output
 }
 
-#' This function computes the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
+#' Compute the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
 #' stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction
-#' NOTE: It uses Daniel Ziemek's idea of combining everything into a tibble first, then assigning values as needed; it's neat!
 computeStratifiedPVal = function(genotype, phenotypeC, phenotypeS, exact = FALSE, correct = FALSE) {
   microTabs <- tibble::tibble(A = genotype, B = phenotypeC, C = phenotypeS) %>%
     dplyr::filter(!is.na(A) & !is.na(B) & !is.na(C)) %>%
@@ -32,7 +31,7 @@ computeStratifiedPVal = function(genotype, phenotypeC, phenotypeS, exact = FALSE
   extraStat
 }
 
-#' This function creates and solves an ILP (integer linear program) for maximizing an objective function over input phenotypes
+#' Create and solve an ILP (integer linear program) for maximizing an objective function over input phenotypes
 #' The arguments are similar to the function below, except that the genotype is not supplied and phenotypes must be a matrix
 #' The objVector specifies the vector of objective function values to apply to each entry of the phenotype during optimization
 #' The boundValue parameter specifies a bound on the objective function; not achieving this bound makes the problem infeasible
@@ -188,9 +187,9 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
   }
   solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
-  Rcplex::Rcplex.close()
   solution$xopt %<>%
     magrittr::set_names(coln)
+  Rcplex::Rcplex.close()
   output = extractSolution(solution)
   if (!all(is.na(output$usedVars))) {
     rownames(output$usedVars) <- colnames(phenotypes)[seq_len(nrow(output$usedVars))]

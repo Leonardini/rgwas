@@ -2,7 +2,7 @@
 % Please edit documentation in R/Logical.R
 \name{createAndSolveILP}
 \alias{createAndSolveILP}
-\title{This function creates and solves an ILP (integer linear program) for maximizing an objective function over input phenotypes
+\title{Create and solve an ILP (integer linear program) for maximizing an objective function over input phenotypes
 The arguments are similar to the function below, except that the genotype is not supplied and phenotypes must be a matrix
 The objVector specifies the vector of objective function values to apply to each entry of the phenotype during optimization
 The boundValue parameter specifies a bound on the objective function; not achieving this bound makes the problem infeasible}
@@ -19,7 +19,7 @@ createAndSolveILP(
 )
 }
 \description{
-This function creates and solves an ILP (integer linear program) for maximizing an objective function over input phenotypes
+Create and solve an ILP (integer linear program) for maximizing an objective function over input phenotypes
 The arguments are similar to the function below, except that the genotype is not supplied and phenotypes must be a matrix
 The objVector specifies the vector of objective function values to apply to each entry of the phenotype during optimization
 The boundValue parameter specifies a bound on the objective function; not achieving this bound makes the problem infeasible

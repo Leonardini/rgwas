@@ -2,12 +2,12 @@
 % Please edit documentation in R/Preprocess.R
 \name{computePValueBounds}
 \alias{computePValueBounds}
-\title{This function computes, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
+\title{Compute, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
 with row sums nPlus and N - nPlus, and column sums i and N - i has log p-value below pMax when its top left entry is at least j.}
 \usage{
 computePValueBounds(N, nPlus, pMax)
 }
 \description{
-This function computes, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
+Compute, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
 with row sums nPlus and N - nPlus, and column sums i and N - i has log p-value below pMax when its top left entry is at least j.
 }

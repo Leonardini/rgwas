@@ -1,4 +1,4 @@
-#' This function turns an input 2-dimensional vector into a unit vector in the same direction
+#' Turn an input 2-dimensional vector into a unit vector in the same direction
 normalizeVector = function(vector) {
   len <- pracma::hypot(vector[1], vector[2])
   if (dplyr::near(len, 0)) {
@@ -8,7 +8,7 @@ normalizeVector = function(vector) {
   normVector
 }
 
-#' Determines the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignores magnitudes!)
+#' Determine the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignore magnitudes!)
 #' The return value is positive if the turn is a right turn, negative if the turn is a left turn, 0 if the points are collinear
 getAngle = function(threePointSet) {
   stopifnot(all(dim(threePointSet) == c(3, 2)))
@@ -89,8 +89,8 @@ findIntersection = function(endPoints1, endPoints2) {
   output
 }
 
-#' Compares two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
-#' Returns TRUE if they are numerically identical, FALSE otherwise. Does not check that the points have the same dimensions!
+#' Compare two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
+#' Return TRUE if they are numerically identical, FALSE otherwise. Do not check that the points have the same dimensions!
 comparePoints = function(point1, point2, Dim = 2) {
   comp <- TRUE
   for (ind in 1:Dim) {
@@ -171,9 +171,9 @@ checkObtuse <- function(point1, point2, point3, sign, tol = TOL) {
   return(myAngle < -tol)
 }
 
-#' Implementation of the Imai-Iri algorithm for finding the shortest piecewise linear path lying between pointsP and pointsM.
-#' Assumes, without checking, that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
-#' Also assumes, without checking, that the y-coordinates of pointsP are pointwise larger than those of pointsM.
+#' The Imai-Iri algorithm for finding the shortest piecewise linear path lying between pointsP and pointsM.
+#' Assume without checking that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
+#' Also assume without checking that the y-coordinates of pointsP are pointwise larger than those of pointsM.
 #' This implementation is a corrected version of the pseudocode in Sabine Neubauer's student thesis (University of Karlsruhe).
 ImaiIriAlgorithm = function(pointsP, pointsM) {
   n <- nrow(pointsP)

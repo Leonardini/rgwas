@@ -7,14 +7,13 @@ mainDriver = function(inputFile, type = "CNF", objective = "agreement", K = 3, L
     miniFile <- stringr::str_sub(inputFile, 1, -4)
   }
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
-  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", id = "c", .default = "l"))
-  if ("id" %in% colnames(inputTab)) { inputTab <- inputTab %>% rename(ID = id) }
+  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
   numSNPs <- stringr::str_extract(miniFile, paste0("([0-9]+)", ext)) %>%
     stringr::str_remove(ext) %>%
     readr::parse_integer()
   numPheno <- (ncol(inputTab) - 1 - numSNPs) * (1 + (complement %in% c(-1, 2)))
   numCombos <- choose(choose(numPheno, L), K)
-  myP <- extremeValue %>% as.character
+  myP <- extremeValue %>% as.character()
   myF <- paste0("F", Inf)
   baseFilename <- stringr::str_remove(miniFile, ext)
   stage <- ifelse(OPTIMIZATION, "Optimization", "Triage")
@@ -24,13 +23,13 @@ mainDriver = function(inputFile, type = "CNF", objective = "agreement", K = 3, L
     output <- createAndSolveILPs(inputTab, numSNPs = numSNPs, type = type, objective = objective, K = K, L = L, index = index,
                                  extremeValue = extremeValue, complement = complement, baseFilename = baseFilename, outputAssociations = FALSE, strata = TRUE)
     if (outputSummary && !is.null(output$summary)) {
-      write_csv(output$summary,      stringr::str_replace(miniFile, ext, stringr::str_c(specString,      '_Summary.csv')))
+      readr::write_csv(output$summary,      stringr::str_replace(miniFile, ext, stringr::str_c(specString,      '_Summary.csv')))
     }
     if (outputPhenotype && !is.null(output$phenotype))   {
-      write_csv(output$phenotype,    stringr::str_replace(miniFile, ext, stringr::str_c(specString,    '_Phenotype.csv')))
+      readr::write_csv(output$phenotype,    stringr::str_replace(miniFile, ext, stringr::str_c(specString,    '_Phenotype.csv')))
     }
     if (outputAssociations && !is.null(output$associations)) {
-      write_csv(output$associations, stringr::str_replace(miniFile, ext, stringr::str_c(specString, '_Associations.csv')))
+      readr::write_csv(output$associations, stringr::str_replace(miniFile, ext, stringr::str_c(specString, '_Associations.csv')))
     }
     if (saveOutput)    {
       saveRDS(object = output, file = stringr::str_replace(miniFile, ext, stringr::str_c(specString,              '.RDS')))

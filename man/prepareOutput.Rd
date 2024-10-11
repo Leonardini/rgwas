@@ -2,7 +2,7 @@
 % Please edit documentation in R/Postprocess.R
 \name{prepareOutput}
 \alias{prepareOutput}
-\title{This function prepares the final output from a sequence of ILPs, one per SNP, in the form of 2 tables: summary and phenotype}
+\title{Prepare the final output from a sequence of ILPs, one per SNP, in the form of 2 tables: summary and phenotype}
 \usage{
 prepareOutput(
   output,
@@ -20,5 +20,5 @@ prepareOutput(
 )
 }
 \description{
-This function prepares the final output from a sequence of ILPs, one per SNP, in the form of 2 tables: summary and phenotype
+Prepare the final output from a sequence of ILPs, one per SNP, in the form of 2 tables: summary and phenotype
 }

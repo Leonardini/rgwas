@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{extractMinimalColumns}
 \alias{extractMinimalColumns}
-\title{Extracts the minimal columns of a logical input matrix with respect to set inclusion}
+\title{Extract the minimal columns of a logical input matrix with respect to set inclusion}
 \usage{
 extractMinimalColumns(inputMatrix)
 }
 \description{
-Extracts the minimal columns of a logical input matrix with respect to set inclusion
+Extract the minimal columns of a logical input matrix with respect to set inclusion
 }

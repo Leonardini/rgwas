@@ -2,7 +2,7 @@
 % Please edit documentation in R/Postprocess.R
 \name{extractSolution}
 \alias{extractSolution}
-\title{Solution extracting function for the output from CPLEX via Rcplex}
+\title{Extract solution from the output of CPLEX via Rcplex}
 \usage{
 extractSolution(
   solution,
@@ -13,5 +13,5 @@ extractSolution(
 )
 }
 \description{
-Solution extracting function for the output from CPLEX via Rcplex
+Extract solution from the output of CPLEX via Rcplex
 }

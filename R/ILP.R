@@ -1,4 +1,4 @@
-#' This function produces instructions controlling the execution of a CPLEX optimization to write to a script file
+#' Produce instructions controlling the execution of a CPLEX optimization
 makeControlLines = function(timeLimit = TIME_LIMIT, probeLevel = PROBE_LEVEL, emphasis = EMPHASIS, varSelect = VAR_SELECT, cutLevel = CUT_LEVEL) {
   Control = list()
   if (!is.na(timeLimit))   { Control$tilim         = timeLimit }
@@ -9,7 +9,7 @@ makeControlLines = function(timeLimit = TIME_LIMIT, probeLevel = PROBE_LEVEL, em
   Control
 }
 
-#' This function creates and solves ILPs (integer linear programs) for maximizing an objective function over input phenotypes
+#' Create and solve ILPs (integer linear programs) for maximizing an objective function over input phenotypes
 #' The first numSNPs columns of the input table are assumed to be the SNPs of interest; the rest are assumed to be phenotypes
 #' The value of objective can be "agreement" or "covariance"
 #' The value of type can be "CNF" (conjunctive normal form) or "DNF" (disjunctive normal form)

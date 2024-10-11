@@ -2,10 +2,10 @@
 % Please edit documentation in R/ImaiIri.R
 \name{normalizeVector}
 \alias{normalizeVector}
-\title{This function turns an input 2-dimensional vector into a unit vector in the same direction}
+\title{Turn an input 2-dimensional vector into a unit vector in the same direction}
 \usage{
 normalizeVector(vector)
 }
 \description{
-This function turns an input 2-dimensional vector into a unit vector in the same direction
+Turn an input 2-dimensional vector into a unit vector in the same direction
 }

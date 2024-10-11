@@ -2,12 +2,12 @@
 % Please edit documentation in R/ImaiIri.R
 \name{comparePoints}
 \alias{comparePoints}
-\title{Compares two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
-Returns TRUE if they are numerically identical, FALSE otherwise. Does not check that the points have the same dimensions!}
+\title{Compare two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
+Return TRUE if they are numerically identical, FALSE otherwise. Do not check that the points have the same dimensions!}
 \usage{
 comparePoints(point1, point2, Dim = 2)
 }
 \description{
-Compares two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
-Returns TRUE if they are numerically identical, FALSE otherwise. Does not check that the points have the same dimensions!
+Compare two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
+Return TRUE if they are numerically identical, FALSE otherwise. Do not check that the points have the same dimensions!
 }

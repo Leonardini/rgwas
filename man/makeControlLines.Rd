@@ -2,11 +2,9 @@
 % Please edit documentation in R/ILP.R
 \name{makeControlLines}
 \alias{makeControlLines}
-\title{This function produces instructions controlling the execution of a CPLEX optimization to write to a script file}
+\title{Produce instructions controlling the execution of a CPLEX optimization}
 \usage{
 makeControlLines(
-  parMode = PAR_MODE,
-  nThreads = NUM_THREADS,
   timeLimit = TIME_LIMIT,
   probeLevel = PROBE_LEVEL,
   emphasis = EMPHASIS,
@@ -15,5 +13,5 @@ makeControlLines(
 )
 }
 \description{
-This function produces instructions controlling the execution of a CPLEX optimization to write to a script file
+Produce instructions controlling the execution of a CPLEX optimization
 }

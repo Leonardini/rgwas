@@ -2,12 +2,12 @@
 % Please edit documentation in R/ImaiIri.R
 \name{getAngle}
 \alias{getAngle}
-\title{Determines the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignores magnitudes!)
+\title{Determine the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignore magnitudes!)
 The return value is positive if the turn is a right turn, negative if the turn is a left turn, 0 if the points are collinear}
 \usage{
 getAngle(threePointSet)
 }
 \description{
-Determines the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignores magnitudes!)
+Determine the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignore magnitudes!)
 The return value is positive if the turn is a right turn, negative if the turn is a left turn, 0 if the points are collinear
 }

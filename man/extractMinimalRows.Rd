@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{extractMinimalRows}
 \alias{extractMinimalRows}
-\title{Extracts the minimal rows of a logical input matrix with respect to set inclusion}
+\title{Extract the minimal rows of a logical input matrix with respect to set inclusion}
 \usage{
 extractMinimalRows(inputMatrix)
 }
 \description{
-Extracts the minimal rows of a logical input matrix with respect to set inclusion
+Extract the minimal rows of a logical input matrix with respect to set inclusion
 }

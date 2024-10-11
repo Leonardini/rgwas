@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{parseFormula}
 \alias{parseFormula}
-\title{Parses a formula of type "CNF" or "DNF" into a standard matrix representation}
+\title{Parse a formula of type "CNF" or "DNF" into a standard matrix representation}
 \usage{
 parseFormula(Formula, type)
 }
 \description{
-Parses a formula of type "CNF" or "DNF" into a standard matrix representation
+Parse a formula of type "CNF" or "DNF" into a standard matrix representation
 }

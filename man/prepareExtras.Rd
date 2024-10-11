@@ -2,7 +2,7 @@
 % Please edit documentation in R/Preprocess.R
 \name{prepareExtras}
 \alias{prepareExtras}
-\title{This function prepares the extra information relating to the boundary}
+\title{Prepare the extra information relating to the boundary}
 \usage{
 prepareExtras(
   extraDefinitions,
@@ -16,5 +16,5 @@ prepareExtras(
 )
 }
 \description{
-This function prepares the extra information relating to the boundary
+Prepare the extra information relating to the boundary
 }

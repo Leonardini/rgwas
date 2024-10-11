@@ -2,16 +2,16 @@
 % Please edit documentation in R/ImaiIri.R
 \name{ImaiIriAlgorithm}
 \alias{ImaiIriAlgorithm}
-\title{Implementation of the Imai-Iri algorithm for finding the shortest piecewise linear path lying between pointsP and pointsM.
-Assumes, without checking, that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
-Also assumes, without checking, that the y-coordinates of pointsP are pointwise larger than those of pointsM.
+\title{The Imai-Iri algorithm for finding the shortest piecewise linear path lying between pointsP and pointsM.
+Assume without checking that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
+Also assume without checking that the y-coordinates of pointsP are pointwise larger than those of pointsM.
 This implementation is a corrected version of the pseudocode in Sabine Neubauer's student thesis (University of Karlsruhe).}
 \usage{
 ImaiIriAlgorithm(pointsP, pointsM)
 }
 \description{
-Implementation of the Imai-Iri algorithm for finding the shortest piecewise linear path lying between pointsP and pointsM.
-Assumes, without checking, that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
-Also assumes, without checking, that the y-coordinates of pointsP are pointwise larger than those of pointsM.
+The Imai-Iri algorithm for finding the shortest piecewise linear path lying between pointsP and pointsM.
+Assume without checking that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
+Also assume without checking that the y-coordinates of pointsP are pointwise larger than those of pointsM.
 This implementation is a corrected version of the pseudocode in Sabine Neubauer's student thesis (University of Karlsruhe).
 }

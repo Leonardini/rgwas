@@ -2,7 +2,7 @@
 % Please edit documentation in R/Preprocess.R
 \name{prepareCoeffsAndExtraScores}
 \alias{prepareCoeffsAndExtraScores}
-\title{This function prepares the coefficients and the extra scores based on a specified genotype matrix and objective function.}
+\title{Prepare the coefficients and the extra scores based on a specified genotype matrix and objective function.}
 \usage{
 prepareCoeffsAndExtraScores(
   genotypes,
@@ -16,5 +16,5 @@ prepareCoeffsAndExtraScores(
 )
 }
 \description{
-This function prepares the coefficients and the extra scores based on a specified genotype matrix and objective function.
+Prepare the coefficients and the extra scores based on a specified genotype matrix and objective function.
 }

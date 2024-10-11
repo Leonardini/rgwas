@@ -2,8 +2,8 @@
 % Please edit documentation in R/Preprocess.R
 \name{reducePhenotypesAndObjectives}
 \alias{reducePhenotypesAndObjectives}
-\title{This function reduces an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
-Optionally, it can take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
+\title{Reduce an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
+Optionally, take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
 The return value is a list containing:
 \itemize{
 \item the reduced phenotype and objective matrices
@@ -15,8 +15,8 @@ The return value is a list containing:
 reducePhenotypesAndObjectives(phenotypes, objVectors, genotypes = NULL)
 }
 \description{
-This function reduces an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
-Optionally, it can take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
+Reduce an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
+Optionally, take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
 The return value is a list containing:
 \itemize{
 \item the reduced phenotype and objective matrices

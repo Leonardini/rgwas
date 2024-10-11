@@ -1,10 +1,9 @@
-#' Finds a short piecewise linear function that ensures that all integer points below it lie on or below the input-defined one.
-#'
-#' Returns the breakpoints of this function, which are guaranteed to be as few as possible in number (see the original paper).
-#' if dryRun = TRUE, only returns the extreme points to be used, pruned for collinearity; otherwise computes the best boundary.
+#' Find a short piecewise linear function that ensures that all integer points below it lie on or below the input-defined one.
+#' Return the breakpoints of this function, which are guaranteed to be as few as possible in number (see the original paper).
+#' if dryRun = TRUE, only return the extreme points to be used, pruned for collinearity; otherwise computes the best boundary.
 #' If verify = TRUE, also check that the input points lie below (above) the output points but no more than 1 below (above) them.
 #' The width specifies the width of the "tunnel" used; for best results, it should be close to 1, but strictly smaller than it.
-#' Uses the standard Imai-Iri algorithm of given width (the restricted = TRUE option, now obsolete, is found in LegacyCode.R).
+#' Use the standard Imai-Iri algorithm of given width.
 callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FALSE, CPP = FALSE, fname = "Test.csv") {
   stopifnot(width <= 1)
   if (nrow(extremePoints) == 0) {
@@ -24,7 +23,7 @@ callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FA
     if (nrow(points) <= 2) {
       breakpoints <- points
     } else {
-      write_csv(points, fname)
+      readr::write_csv(points, fname)
       cmdName <- "/Users/lchindelevitch/Downloads/rgwas/plfoptq"
       breakpoints <- system2(cmdName, args = c(fname, width/2), stdout = TRUE) %>%
         stringr::str_split_fixed(",", 2) %>%
@@ -70,10 +69,10 @@ callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FA
   output
 }
 
-#' Checking function to ensure that the input endpoints define a boundary lying entirely above the PWLF defined by the checkpoints
+#' Check to ensure that the input endpoints define a boundary lying entirely above the PWLF defined by the checkpoints
 #' If below = TRUE, check that the boundary lies below the PWLF instead (abbreviation used: PWLF = piecewise linear function).
-#' If reportCoincident = FALSE, also returns a list of all checkpoints that coincide exactly with one of the endpoints.
-#' Returns TRUE if the condition is fulfilled, otherwise prints out the details of the earliest found violation, returns FALSE.
+#' If reportCoincident = FALSE, also return a list of all checkpoints that coincide exactly with one of the endpoints.
+#' Return TRUE if the condition is fulfilled; otherwise print out the details of the earliest found violation, return FALSE.
 checkPosition = function(endpoints, checkpoints, below = TRUE, reportCoincident = FALSE) {
   checkpoints %<>%
     as.matrix

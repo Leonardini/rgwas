@@ -75,7 +75,7 @@ computeAgreements = function(matrix1, matrix2) {
   output
 }
 
-#' This function computes, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
+#' Compute, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
 #' with row sums nPlus and N - nPlus, and column sums i and N - i has log p-value below pMax when its top left entry is at least j.
 computePValueBounds = function(N, nPlus, pMax) {
   print(paste("The log p-value being considered as the cutoff is", pMax))
@@ -107,7 +107,7 @@ computePValueBounds = function(N, nPlus, pMax) {
   output
 }
 
-#' This function prepares a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
+#' Prepare a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
 #' If complement =  1 or 2, each genotype  is present twice, the second time in negated form.
 #' If complement = -1 or 2, each phenotype is present twice, the second time in negated form.
 prepareMatrices = function(inputTab, numSNPs, complement) {
@@ -135,7 +135,7 @@ prepareMatrices = function(inputTab, numSNPs, complement) {
   output
 }
 
-#' This function prepares the coefficients and the extra scores based on a specified genotype matrix and objective function.
+#' Prepare the coefficients and the extra scores based on a specified genotype matrix and objective function.
 prepareCoeffsAndExtraScores = function(genotypes, objective, sumYs, ns, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
   coeffsTrue  <- rep(1, ncol(genotypes))
   coeffsAgree <- rep(1, ncol(genotypes))
@@ -154,8 +154,8 @@ prepareCoeffsAndExtraScores = function(genotypes, objective, sumYs, ns, TPscore 
   output
 }
 
-#' This function reduces an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
-#' Optionally, it can take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
+#' Reduce an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
+#' Optionally, take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
 #' The return value is a list containing:
 #' - the reduced phenotype and objective matrices
 #' - the status of each row and column: FALSE if it has been removed, TRUE if it has been preserved
@@ -246,7 +246,7 @@ prepareExtremeValues = function(extremeValue, type, singleValues, singleBestRati
   extremeValues
 }
 
-#' Prepares the upper cutoffs based on the input, type and objective function
+#' Prepare the upper cutoffs based on the input, type and objective function
 prepareBoundValues = function(extremeValues, type, objective, ns, sumYs, coeffsTrue, coeffsAgree) {
   startBound <- NA
   if (any(is.null(extremeValues))) {
@@ -260,7 +260,7 @@ prepareBoundValues = function(extremeValues, type, objective, ns, sumYs, coeffsT
   boundValues
 }
 
-#' This function prepares the extra information relating to the boundary
+#' Prepare the extra information relating to the boundary
 prepareExtras = function(extraDefinitions, ind, goodInds, extremeValue, ns, sumYs, baseFilename, index = 0L) {
   stopifnot(extremeValue <= 0)
   curDefinitions <- extraDefinitions[c(paste0("S", ind), paste0("T", ind)), c(1, 1 + goodInds), drop = FALSE]

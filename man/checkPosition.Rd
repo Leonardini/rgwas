@@ -2,16 +2,16 @@
 % Please edit documentation in R/Geometry.R
 \name{checkPosition}
 \alias{checkPosition}
-\title{Checking function to ensure that the input endpoints define a boundary lying entirely above the PWLF defined by the checkpoints
+\title{Check to ensure that the input endpoints define a boundary lying entirely above the PWLF defined by the checkpoints
 If below = TRUE, check that the boundary lies below the PWLF instead (abbreviation used: PWLF = piecewise linear function).
-If reportCoincident = FALSE, also returns a list of all checkpoints that coincide exactly with one of the endpoints.
-Returns TRUE if the condition is fulfilled, otherwise prints out the details of the earliest found violation, returns FALSE.}
+If reportCoincident = FALSE, also return a list of all checkpoints that coincide exactly with one of the endpoints.
+Return TRUE if the condition is fulfilled; otherwise print out the details of the earliest found violation, return FALSE.}
 \usage{
 checkPosition(endpoints, checkpoints, below = TRUE, reportCoincident = FALSE)
 }
 \description{
-Checking function to ensure that the input endpoints define a boundary lying entirely above the PWLF defined by the checkpoints
+Check to ensure that the input endpoints define a boundary lying entirely above the PWLF defined by the checkpoints
 If below = TRUE, check that the boundary lies below the PWLF instead (abbreviation used: PWLF = piecewise linear function).
-If reportCoincident = FALSE, also returns a list of all checkpoints that coincide exactly with one of the endpoints.
-Returns TRUE if the condition is fulfilled, otherwise prints out the details of the earliest found violation, returns FALSE.
+If reportCoincident = FALSE, also return a list of all checkpoints that coincide exactly with one of the endpoints.
+Return TRUE if the condition is fulfilled; otherwise print out the details of the earliest found violation, return FALSE.
 }

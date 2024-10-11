@@ -1,4 +1,4 @@
-#' Driver function for the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
+#' Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
 #' If shuffle = FALSE, the first half of the patients go into discovery and the second into validation; if TRUE, simulate an RCT.
 validationDriver = function(inputFile, type = "CNF", objective = "agreement", complement = 2, extremeValue = log(MAX_P),
                             Klist = KLIST, Llist = LLIST, index = 0, outputAssociations = TRUE, shuffle = TRUE) {
@@ -11,8 +11,7 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
     miniFile <- inputFile
   }
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
-  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", id = "c", .default = "l"))
-  if ("id" %in% colnames(inputTab)) { inputTab %<>% rename(ID = id) }
+  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
   numSNPs <- stringr::str_extract(miniFile, paste0("([0-9]+)", ext)) %>%
     stringr::str_remove(ext) %>%
     readr::parse_integer()
@@ -35,14 +34,14 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
     } else {
       redTab <- dplyr::bind_cols(IDs, genotypes %>% dplyr::select(all_of(curSNP)), phenotypes)
       redFilename <- stringr::str_replace(miniFile, ext, paste0(curSNP, "_", 1, ext))
-      write_csv(redTab, redFilename)
+      readr::write_csv(redTab, redFilename)
       results[[curSNP]] <- fullValidation(redFilename, type = type, objective = objective, extremeValue = extremeValue,
                            Klist = Klist, Llist = Llist, index = index * THOUSAND + ind, nPheno = nPheno, shuffle = shuffle)
     }
   }
   if (outputAssociations) {
     singleRes <- computeBestPValues(myMatrices$genotypes, myMatrices$phenotypes, fisher = TRUE)
-    write_csv(singleRes$allValues %>%
+    readr::write_csv(singleRes$allValues %>%
                 tibble::as_tibble(rownames = "association"), stringr::str_replace(miniFile, ext, '_Associations.csv'))
     N <- nrow(myMatrices$genotypes)
     if (shuffle) {
@@ -54,11 +53,11 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
     second <- setdiff(1:N, first)
     singleTrain <- computeBestPValues(myMatrices$genotypes[first, , drop = FALSE], myMatrices$phenotypes[first, , drop = FALSE],
                                       fisher = TRUE)
-    write_csv(singleTrain$allValues %>%
+    readr::write_csv(singleTrain$allValues %>%
                 tibble::as_tibble(rownames = "association"), stringr::str_replace(miniFile, ext, '_Train_Associations.csv'))
     singleTest <- computeBestPValues(myMatrices$genotypes[second, , drop = FALSE], myMatrices$phenotypes[second, , drop = FALSE],
                                       fisher = TRUE)
-    write_csv(singleTest$allValues  %>%
+    readr::write_csv(singleTest$allValues  %>%
                 tibble::as_tibble(rownames = "association"), stringr::str_replace(miniFile, ext,  '_Test_Associations.csv'))
   }
   results
@@ -81,8 +80,8 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
       if (curSummary$status[1] %in% c("feasible", "optimal")) {
         ext <- stringr::str_sub(splitNames[1], -4)
         specString <- paste(c("", type, "K", curK, "L", curL), collapse = "_")
-        write_csv(curResult$summary,                  stringr::str_replace(splitNames[1], ext, stringr::str_c(specString,  '_Summary.csv')))
-        write_csv(as.data.frame(curResult$phenotype), stringr::str_replace(splitNames[1], ext, stringr::str_c(specString,  '_Phenotype.csv')))
+        readr::write_csv(curResult$summary,                  stringr::str_replace(splitNames[1], ext, stringr::str_c(specString,  '_Summary.csv')))
+        readr::write_csv(as.data.frame(curResult$phenotype), stringr::str_replace(splitNames[1], ext, stringr::str_c(specString,  '_Phenotype.csv')))
         curFormula <- curSummary$formula
         BD <- ifelse("LogCMHExactP" %in% names(curSummary), curSummary$bestSingle, NA)
         valResults <- generateValidationPhenotype(splitNames[2], curFormula, type = type, K = curK, L = curL, bestDiscovery = BD,
@@ -97,7 +96,7 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
   } else {
     fullRes <- initRes
   }
-  write_csv(fullRes, str_replace(inputFile, paste0("\\", stringr::str_sub(inputFile, -4)), '_FullResults.csv'))
+  readr::write_csv(fullRes, str_replace(inputFile, paste0("\\", stringr::str_sub(inputFile, -4)), '_FullResults.csv'))
   if (removeInput) { file.remove(c(splitNames, inputFile)) }
   fullRes
 }
@@ -120,8 +119,8 @@ splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -
   inputFile1 <- stringr::str_replace(inputFile, ext, '_Train_1.csv')
   inputFile2 <- stringr::str_replace(inputFile, ext,  '_Test_1.csv')
   stopifnot(!file.exists(inputFile1) && !file.exists(inputFile2))
-  write_csv(Tab1, inputFile1)
-  write_csv(Tab2, inputFile2)
+  readr::write_csv(Tab1, inputFile1)
+  readr::write_csv(Tab2, inputFile2)
   output <- c(inputFile1, inputFile2)
   output
 }
@@ -196,8 +195,8 @@ generateValidationPhenotype = function(inputFile, Formula, type, objective = "ag
   output <- list(phenotype = complexPhenotypes, summary = outputSum, associations = singleRes$allValues %>%
                    tibble::as_tibble(rownames = "association"))
   specString <- paste0(paste(c("", type, "K", K, "L", L), collapse = "_"), ifelse(SNP != "", paste0("_", SNP), ""))
-  if (outputSummary)      {write_csv(output$summary,      stringr::str_replace(miniFile, ext, stringr::str_c(specString,      '_Summary.csv')))}
-  if (outputPhenotype)    {write_csv(output$phenotype,    stringr::str_replace(miniFile, ext, stringr::str_c(specString,    '_Phenotype.csv')))}
-  if (outputAssociations) {write_csv(output$associations, stringr::str_replace(miniFile, ext, stringr::str_c(specString, '_Associations.csv')))}
+  if (outputSummary)      {readr::write_csv(output$summary,      stringr::str_replace(miniFile, ext, stringr::str_c(specString,      '_Summary.csv')))}
+  if (outputPhenotype)    {readr::write_csv(output$phenotype,    stringr::str_replace(miniFile, ext, stringr::str_c(specString,    '_Phenotype.csv')))}
+  if (outputAssociations) {readr::write_csv(output$associations, stringr::str_replace(miniFile, ext, stringr::str_c(specString, '_Associations.csv')))}
   output
 }

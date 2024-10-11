@@ -2,10 +2,10 @@
 % Please edit documentation in R/Postprocess.R
 \name{postprocessSolution}
 \alias{postprocessSolution}
-\title{This function postprocesses a given solution of an ILP to put it into a convenient format: the phenotype and the clause}
+\title{Postprocess a given solution of an ILP to put it into a convenient format: the phenotype and the clause}
 \usage{
 postprocessSolution(origPhenotypes, solutionMatrix, type, complement = 0)
 }
 \description{
-This function postprocesses a given solution of an ILP to put it into a convenient format: the phenotype and the clause
+Postprocess a given solution of an ILP to put it into a convenient format: the phenotype and the clause
 }

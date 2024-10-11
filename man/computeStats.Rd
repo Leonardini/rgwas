@@ -2,12 +2,12 @@
 % Please edit documentation in R/Postprocess.R
 \name{computeStats}
 \alias{computeStats}
-\title{This function computes a number of 2 x 2 statistics based on a tibble containing at a minimum the columns TP, FP, FN and TN
-If pvals = TRUE, additionally computes the Fisher exact and chi-squared p-values (in log-space).}
+\title{Compute a number of 2 x 2 statistics based on a tibble containing at a minimum the columns TP, FP, FN and TN
+If pvals = TRUE, additionally compute the Fisher exact and chi-squared p-values (in log-space).}
 \usage{
 computeStats(Tibble, pvals = TRUE)
 }
 \description{
-This function computes a number of 2 x 2 statistics based on a tibble containing at a minimum the columns TP, FP, FN and TN
-If pvals = TRUE, additionally computes the Fisher exact and chi-squared p-values (in log-space).
+Compute a number of 2 x 2 statistics based on a tibble containing at a minimum the columns TP, FP, FN and TN
+If pvals = TRUE, additionally compute the Fisher exact and chi-squared p-values (in log-space).
 }

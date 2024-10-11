@@ -2,9 +2,8 @@
 % Please edit documentation in R/Logical.R
 \name{computeStratifiedPVal}
 \alias{computeStratifiedPVal}
-\title{This function computes the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
-stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction
-NOTE: It uses Daniel Ziemek's idea of combining everything into a tibble first, then assigning values as needed; it's neat!}
+\title{Compute the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
+stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction}
 \usage{
 computeStratifiedPVal(
   genotype,
@@ -15,7 +14,6 @@ computeStratifiedPVal(
 )
 }
 \description{
-This function computes the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
+Compute the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
 stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction
-NOTE: It uses Daniel Ziemek's idea of combining everything into a tibble first, then assigning values as needed; it's neat!
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{applyFormula}
 \alias{applyFormula}
-\title{Applies a formula in a standard matrix representation (of type "CNF" or "DNF") to a phenotype matrix (assumed to be logical)}
+\title{Apply a formula in a standard matrix representation (of type "CNF" or "DNF") to a phenotype matrix (assumed to be logical)}
 \usage{
 applyFormula(parsedFormula, phenotypes, type)
 }
 \description{
-Applies a formula in a standard matrix representation (of type "CNF" or "DNF") to a phenotype matrix (assumed to be logical)
+Apply a formula in a standard matrix representation (of type "CNF" or "DNF") to a phenotype matrix (assumed to be logical)
 }

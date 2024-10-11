@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{deleteRepeatedRows}
 \alias{deleteRepeatedRows}
-\title{This function deletes any repeated rows of the input matrix}
+\title{Delete any repeated rows of the input matrix}
 \usage{
 deleteRepeatedRows(inputMatrix)
 }
 \description{
-This function deletes any repeated rows of the input matrix
+Delete any repeated rows of the input matrix
 }

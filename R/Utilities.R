@@ -1,4 +1,4 @@
-#' This function extracts the unique rows of a table; if repeats = TRUE, also returns the groups corresponding to each unique row
+#' Extract the unique rows of a table; if repeats = TRUE, also returns the groups corresponding to each unique row
 #' Partly based on the solution at r.789695.n4.nabble.com/Count-unique-rows-columns-in-a-matrix-td844731.html
 extractUniqueRows = function(Table, repeats = TRUE) {
   Q <- nrow(Table)
@@ -35,13 +35,13 @@ extractUniqueRows = function(Table, repeats = TRUE) {
   output
 }
 
-#' This function deletes any repeated rows of the input matrix
+#' Delete any repeated rows of the input matrix
 deleteRepeatedRows = function(inputMatrix) {
   uniqueRows <- extractUniqueRows(inputMatrix, repeats = FALSE)[[1]]
   uniqueRows
 }
 
-#' This function deletes any all-zero columns of a logical input matrix
+#' Delete any all-zero columns of a logical input matrix
 deleteZeroColumns = function(inputMatrix) {
   goodInds <- which(colSums(inputMatrix) > 0)
   inputMatrix %<>%
@@ -49,7 +49,7 @@ deleteZeroColumns = function(inputMatrix) {
   inputMatrix
 }
 
-#' This function finds any rows of the input matrix which are subsets of the input vector; both are assumed to be logical
+#' Find any rows of the input matrix which are subsets of the input vector; both are assumed to be logical
 findSubsetRows = function(inputMatrix, inputVector) {
   M <- nrow(inputMatrix)
   stopifnot(length(inputVector) == ncol(inputMatrix))
@@ -74,20 +74,20 @@ pruneSupersets = function(inputMatrix) {
   outputMatrix
 }
 
-#' Extracts the minimal rows of a logical input matrix with respect to set inclusion
+#' Extract the minimal rows of a logical input matrix with respect to set inclusion
 extractMinimalRows = function(inputMatrix) {
   inputMatrix <- deleteRepeatedRows(inputMatrix)
   outputMatrix <- pruneSupersets(inputMatrix)
   outputMatrix
 }
 
-#' Extracts the minimal columns of a logical input matrix with respect to set inclusion
+#' Extract the minimal columns of a logical input matrix with respect to set inclusion
 extractMinimalColumns = function(inputMatrix) {
   outputMatrix <- t(extractMinimalRows(t(inputMatrix)))
   outputMatrix
 }
 
-#' Parses a formula of type "CNF" or "DNF" into a standard matrix representation
+#' Parse a formula of type "CNF" or "DNF" into a standard matrix representation
 parseFormula = function(Formula, type) {
   outerString   <- ifelse(type == "CNF", " AND ", " OR ")
   innerString   <- ifelse(type == "DNF", " AND ", " OR ")
@@ -109,7 +109,7 @@ parseFormula = function(Formula, type) {
   parsedFormula
 }
 
-#' Applies a formula in a standard matrix representation (of type "CNF" or "DNF") to a phenotype matrix (assumed to be logical)
+#' Apply a formula in a standard matrix representation (of type "CNF" or "DNF") to a phenotype matrix (assumed to be logical)
 applyFormula = function(parsedFormula, phenotypes, type) {
   stopifnot(all(rownames(parsedFormula) %in% colnames(phenotypes)))
   phenotypes %<>%

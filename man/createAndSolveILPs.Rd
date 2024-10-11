@@ -2,7 +2,7 @@
 % Please edit documentation in R/ILP.R
 \name{createAndSolveILPs}
 \alias{createAndSolveILPs}
-\title{This function creates and solves ILPs (integer linear programs) for maximizing an objective function over input phenotypes
+\title{Create and solve ILPs (integer linear programs) for maximizing an objective function over input phenotypes
 The first numSNPs columns of the input table are assumed to be the SNPs of interest; the rest are assumed to be phenotypes
 The value of objective can be "agreement" or "covariance"
 The value of type can be "CNF" (conjunctive normal form) or "DNF" (disjunctive normal form)
@@ -35,7 +35,7 @@ createAndSolveILPs(
 )
 }
 \description{
-This function creates and solves ILPs (integer linear programs) for maximizing an objective function over input phenotypes
+Create and solve ILPs (integer linear programs) for maximizing an objective function over input phenotypes
 The first numSNPs columns of the input table are assumed to be the SNPs of interest; the rest are assumed to be phenotypes
 The value of objective can be "agreement" or "covariance"
 The value of type can be "CNF" (conjunctive normal form) or "DNF" (disjunctive normal form)

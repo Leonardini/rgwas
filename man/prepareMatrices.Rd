@@ -2,14 +2,14 @@
 % Please edit documentation in R/Preprocess.R
 \name{prepareMatrices}
 \alias{prepareMatrices}
-\title{This function prepares a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
+\title{Prepare a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
 If complement =  1 or 2, each genotype  is present twice, the second time in negated form.
 If complement = -1 or 2, each phenotype is present twice, the second time in negated form.}
 \usage{
 prepareMatrices(inputTab, numSNPs, complement)
 }
 \description{
-This function prepares a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
+Prepare a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
 If complement =  1 or 2, each genotype  is present twice, the second time in negated form.
 If complement = -1 or 2, each phenotype is present twice, the second time in negated form.
 }

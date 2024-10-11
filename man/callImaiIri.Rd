@@ -2,7 +2,12 @@
 % Please edit documentation in R/Geometry.R
 \name{callImaiIri}
 \alias{callImaiIri}
-\title{Finds a short piecewise linear function that ensures that all integer points below it lie on or below the input-defined one.}
+\title{Find a short piecewise linear function that ensures that all integer points below it lie on or below the input-defined one.
+Return the breakpoints of this function, which are guaranteed to be as few as possible in number (see the original paper).
+if dryRun = TRUE, only return the extreme points to be used, pruned for collinearity; otherwise computes the best boundary.
+If verify = TRUE, also check that the input points lie below (above) the output points but no more than 1 below (above) them.
+The width specifies the width of the "tunnel" used; for best results, it should be close to 1, but strictly smaller than it.
+Use the standard Imai-Iri algorithm of given width.}
 \usage{
 callImaiIri(
   extremePoints,
@@ -14,9 +19,10 @@ callImaiIri(
 )
 }
 \description{
-Returns the breakpoints of this function, which are guaranteed to be as few as possible in number (see the original paper).
-if dryRun = TRUE, only returns the extreme points to be used, pruned for collinearity; otherwise computes the best boundary.
+Find a short piecewise linear function that ensures that all integer points below it lie on or below the input-defined one.
+Return the breakpoints of this function, which are guaranteed to be as few as possible in number (see the original paper).
+if dryRun = TRUE, only return the extreme points to be used, pruned for collinearity; otherwise computes the best boundary.
 If verify = TRUE, also check that the input points lie below (above) the output points but no more than 1 below (above) them.
 The width specifies the width of the "tunnel" used; for best results, it should be close to 1, but strictly smaller than it.
-Uses the standard Imai-Iri algorithm of given width (the restricted = TRUE option, now obsolete, is found in LegacyCode.R).
+Use the standard Imai-Iri algorithm of given width.
 }

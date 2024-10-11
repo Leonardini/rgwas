@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{deleteZeroColumns}
 \alias{deleteZeroColumns}
-\title{This function deletes any all-zero columns of a logical input matrix}
+\title{Delete any all-zero columns of a logical input matrix}
 \usage{
 deleteZeroColumns(inputMatrix)
 }
 \description{
-This function deletes any all-zero columns of a logical input matrix
+Delete any all-zero columns of a logical input matrix
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/Utilities.R
 \name{findSubsetRows}
 \alias{findSubsetRows}
-\title{This function finds any rows of the input matrix which are subsets of the input vector; both are assumed to be logical}
+\title{Find any rows of the input matrix which are subsets of the input vector; both are assumed to be logical}
 \usage{
 findSubsetRows(inputMatrix, inputVector)
 }
 \description{
-This function finds any rows of the input matrix which are subsets of the input vector; both are assumed to be logical
+Find any rows of the input matrix which are subsets of the input vector; both are assumed to be logical
 }
