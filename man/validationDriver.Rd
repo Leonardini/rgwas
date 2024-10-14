@@ -2,7 +2,8 @@
 % Please edit documentation in R/Validation.R
 \name{validationDriver}
 \alias{validationDriver}
-\title{Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
+\title{Validation driver
+Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
 If shuffle = FALSE, the first half of the patients go into discovery and the second into validation; if TRUE, simulate an RCT.}
 \usage{
 validationDriver(
@@ -19,6 +20,7 @@ validationDriver(
 )
 }
 \description{
+Validation driver
 Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
 If shuffle = FALSE, the first half of the patients go into discovery and the second into validation; if TRUE, simulate an RCT.
 }
