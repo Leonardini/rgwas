@@ -137,17 +137,13 @@ prepareMatrices = function(inputTab, numSNPs, complement) {
 
 #' Prepare the coefficients and the extra scores based on a specified genotype matrix and objective function.
 prepareCoeffsAndExtraScores = function(genotypes, objective, sumYs, ns, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
-  coeffsTrue  <- rep(1, ncol(genotypes))
-  coeffsAgree <- rep(1, ncol(genotypes))
+  N <- ncol(genotypes)
+  coeffsTrue  <- sumYs
+  coeffsAgree <- -ns
+  extraScores <- rep(0, N)
   if (objective == "agreement") {
-    coeffsTrue  <- rep(TNscore - FPscore, ncol(genotypes))
-    coeffsAgree <- rep(FPscore + FNscore - TPscore - TNscore, ncol(genotypes))
-  } else if (objective == "covariance") {
-    coeffsTrue  <- sumYs
-    coeffsAgree  <- -ns
-  }
-  extraScores <- rep(0, ncol(genotypes))
-  if (objective == "agreement") {
+    coeffsTrue  <- rep(TNscore - FPscore, N)
+    coeffsAgree <- rep(FPscore + FNscore - TPscore - TNscore, N)
     extraScores <- TNscore * ns + (FNscore - TNscore) * sumYs
   }
   output <- list(coeffsTrue = coeffsTrue, coeffsAgree = coeffsAgree, extraScores = extraScores)

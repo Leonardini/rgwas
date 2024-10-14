@@ -1,5 +1,6 @@
 #' Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
 #' If shuffle = FALSE, the first half of the patients go into discovery and the second into validation; if TRUE, simulate an RCT.
+#' @export
 validationDriver = function(inputFile, type = "CNF", objective = "agreement", complement = 2, extremeValue = log(MAX_P),
                             Klist = KLIST, Llist = LLIST, index = 0, outputAssociations = TRUE, shuffle = TRUE) {
   stopifnot(extremeValue <= 0)

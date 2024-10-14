@@ -28,7 +28,18 @@ For instance, with a standard Mac installation this line typically looks
 like:
 Sys.setenv(CPLEX_BIN="/Applications/CPLEX_Studio_Community201/cplex/bin/x86-64_osx/cplex")
 
-4)  In order to provide the correct parameter settings to CPLEX, add the
+4)  Once these steps have been successfully carried out, install rgwas via:
+    
+    devtools::install_github('bichkd/rgwas')
+
+5)  In order to provide the correct parameter settings to CPLEX, add the
     following line to your .Rprofile (this is normally located in your
     home directory):
     Sys.setenv(ILOG_CPLEX_PARAMETER_FILE="Absolute/Path/To/rgwas/MyParameters.prm")
+    
+    Note that the MyParameters.prm file is distributed alongisde the rgwas package.
+
+6)  To check if everything has been successfully installed, run the commands:
+
+    library(rgwas)
+    X = rgwas::mainDriver(inputFile = "InputInitial0NA_3.csv")

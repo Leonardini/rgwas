@@ -1,3 +1,4 @@
+#' @export
 mainDriver = function(inputFile, type = "CNF", objective = "agreement", K = 3, L = 3, complement = FALSE,
                       ext = stringr::str_sub(inputFile, -4), index = 1L, extremeValue = log(MAX_P),
                       outputSummary = TRUE, outputPhenotype = FALSE, outputAssociations = FALSE, saveOutput = FALSE) {
