@@ -185,7 +185,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   constDir = rep("L", numConst)
   if (!is.null(extraConstraints)) {
     varTypes[(numVar - numExtraVar + 1):numVar] = c(rep("I", 2), "C", rep("B", numSeg), rep("C", numSeg))
-    maxValues = extraConstraints[[1]] %>% tail(1) %>% ceiling()
+    maxValues = ceiling(tail(extraConstraints[[1]], 1))
     UB      [numVar - numExtraVar + (1:3)]      = c(maxValues$Sum, maxValues$Total, maxValues$Sum)
     constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
   }
