@@ -181,12 +181,13 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   }
   Mat = Matrix::sparseMatrix(i = rowInds, j = colInds, x = values, dims = c(numConst, numVar), index1 = TRUE)
   varTypes = rep("B", numVar)
+  UB       = rep(1,   numVar)
   constDir = rep("L", numConst)
   if (!is.null(extraConstraints)) {
     varTypes[(numVar - numExtraVar + 1):numVar] = c(rep("I", 2), "C", rep("B", numSeg), rep("C", numSeg))
+    UB      [numVar - numExtraVar + (1:2)]      = rowSums(extraConstraints[[2]])
     constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
   }
-  UB = ifelse(varTypes == "I", n, 1)
   solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, ub = UB, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
   solution$xopt %<>%
     magrittr::set_names(coln)
