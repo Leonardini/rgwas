@@ -53,7 +53,7 @@ createAndSolveILPs =  function(inputTab, numSNPs = 1, objective = "agreement", t
   out <- reducePhenotypesAndObjectives(phenotypes, objVectors, genotypes = genotypes)
   phenotypes <- out$phenotypes
   objVectors <- out$objVectors
-  extraScores %<>% magrittr::add(out$extraScores)
+  extraScores %<>% magrittr::subtract(out$extraScores) ### Replaced addition by subtraction, 11/11/2024
   numSegments <- rep(NA, ncol(genotypes))
   if (!is.null(extremeValue)) { extraDef <- out$extraDef }
   print("Computing single associations")
@@ -81,7 +81,7 @@ createAndSolveILPs =  function(inputTab, numSNPs = 1, objective = "agreement", t
     curSol <- createAndSolveILP(phenotypes = P, objVector = curObjVector, type = type, K = K, L = L, filename = fn,
                                 boundValue = boundValues[ind], extraConstraints = curExt)
     curPheno <- postprocessSolution(origPhenotypes, curSol$usedVars, type = type, complement = complement)
-    curPhenoMini <- curPheno$solution
+    curPhenoMini <- as.vector(curPheno$solution)
     curGenoMini  <- origGenotypes[, ind, drop = TRUE]
     myTab <- table(curGenoMini, curPhenoMini)
     if (strata) {

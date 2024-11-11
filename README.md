@@ -1,7 +1,8 @@
 ---
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: 72
+output: pdf_document
 ---
 
 # rgwas

@@ -185,7 +185,8 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   constDir = rep("L", numConst)
   if (!is.null(extraConstraints)) {
     varTypes[(numVar - numExtraVar + 1):numVar] = c(rep("I", 2), "C", rep("B", numSeg), rep("C", numSeg))
-    UB      [numVar - numExtraVar + (1:2)]      = rowSums(extraConstraints[[2]])
+    maxValues = extraConstraints[[1]] %>% tail(1) %>% ceiling()
+    UB      [numVar - numExtraVar + (1:3)]      = c(maxValues$Sum, maxValues$Total, maxValues$Sum)
     constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
   }
   solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, ub = UB, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
