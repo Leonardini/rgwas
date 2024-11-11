@@ -15,9 +15,9 @@ file later
     
     install.packages("devtools")
     
-    Whether you have it installed or not, start R and run the command
+    Once installed (or if you already have it), start R and run the command
     
-    library("devtools")
+    library(devtools)
 
 2)  If you do not already have CPLEX Optimisation Studio installed,
     please install it by following the instructions on the IBM website:

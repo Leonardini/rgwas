@@ -186,7 +186,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     varTypes[(numVar - numExtraVar + 1):numVar] = c(rep("I", 2), "C", rep("B", numSeg), rep("C", numSeg))
     constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
   }
-  UB = as.integer(ifelse(varTypes == "I", n, 1))
+  UB = ifelse(varTypes == "I", n, 1)
   solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, ub = UB, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
   solution$xopt %<>%
     magrittr::set_names(coln)
