@@ -1,0 +1,16 @@
+
+#PKG_CPPFLAGS
+PKG_LIBS = -lquadmath
+PKG_CXXFLAGS = -std=c++17 -O3 -march=native
+
+CXXFLAGS = -std=c++17 -O3 -march=native
+
+all: ../inst/bin/plfoptq
+
+../inst/bin/plfoptq:
+	$(CXX) $(PKG_CPPFLAGS) $(CXXFLAGS) $(PKG_CXXFLAGS) -o plfoptq plfoptq.cpp $(PKG_LIBS)
+	mkdir -p ../inst/bin
+	cp plfoptq ../inst/bin/
+
+clean:
+	rm -f plfoptq *.so *.o

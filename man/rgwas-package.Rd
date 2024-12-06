@@ -21,7 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Dmitry Bichko \email{dmitry.bichko@pfizer.com}
+  \item Dmitri Bichko \email{dmitri.bichko@pfizer.com}
 }
 
 }
