@@ -24,8 +24,8 @@ callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FA
       breakpoints <- points
     } else {
       readr::write_csv(points, fname)
-      cmdName <- "src/plfoptq"
-      breakpoints <- system2(cmdName, args = c(fname, width/2), stdout = TRUE) %>%
+      executable_path <- system.file("bin", "plfoptq", package = "rgwas")
+      breakpoints <- system2(executable_path, args = c(fname, width/2), stdout = TRUE) %>%
         stringr::str_split_fixed(",", 2) %>%
         magrittr::set_colnames(c("Total", "Sum")) %>%
         tibble::as_tibble() %>%
