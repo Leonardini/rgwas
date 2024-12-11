@@ -71,7 +71,9 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
   stopifnot(length(Klist) == length(Llist))
   initRes <- tibble::tibble()
   valRes  <- tibble::tibble()
+  print(paste("There are", length(Klist), "options to process"))
   for (ind in 1:length(Klist)) {
+    print(paste("Processing option", ind, "of", length(Klist)))
     curK <- Klist[ind]
     curL <- Llist[ind]
     curResult <- optimizingDriver(splitNames[1], startPValue = extremeValue, factor = 2, type = type, complement = 0,
@@ -98,7 +100,7 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
   } else {
     fullRes <- initRes
   }
-  readr::write_csv(fullRes, str_replace(inputFile, paste0("\\", stringr::str_sub(inputFile, -4)), '_FullResults.csv'))
+  readr::write_csv(fullRes, stringr::str_replace(inputFile, paste0("\\", stringr::str_sub(inputFile, -4)), '_FullResults.csv'))
   if (removeInput) { file.remove(c(splitNames, inputFile)) }
   fullRes
 }

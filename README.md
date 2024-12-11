@@ -82,8 +82,7 @@ Installation instructions
 9)  If you expect to run this code on large inputs and have patience and
     a CPLEX license, please try:
 
-    Y = rgwas::mainDriver(inputFile = "TestInputN500000P10_3.csv",
+    Y = rgwas::validationDriver(inputFile = "TestInputN500000P10_3.csv",
     extremeValue = log(5e-8))
 
-    Please note that this run could take as long as 3 hours to complete
-    in the worst-case scenario.
+    Please note that this run could take several hours to complete.
