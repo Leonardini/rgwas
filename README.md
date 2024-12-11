@@ -67,11 +67,19 @@ Installation instructions
 
     cd \~ ; mkdir .R ; cd .R ; touch Makevars
 
-    Add or append the following lines to this Makevars file:
+    Add or append the following two lines to this Makevars file:
 
-    CC = /usr/local/bin/gcc-14 CXX = /usr/local/bin/g++-14
+    CC = /usr/local/bin/gcc-14 
+    
+    CXX = /usr/local/bin/g++-14
+    
+8)  Proceed with a local installation of the rgwas package by changing into the 
+    directory where you downloaded rgwas and issuing the command below within R:
 
-8)  To check that everything has been successfully installed, run the
+    devtools::install_local(path = ".", force = TRUE,
+    configure.vars = "CC=/usr/local/bin/gcc-14 CXX=/usr/local/bin/g++-14")
+
+9)  To check that everything has been successfully installed, run the
     commands:
 
     library(rgwas)
@@ -79,10 +87,8 @@ Installation instructions
     X = rgwas::mainDriver(inputFile = "TestInputN5000P5_3.csv",
     extremeValue = log(1e-3))
 
-9)  If you expect to run this code on large inputs and have patience and
+10)  If you expect to run this code on large inputs and have patience and
     a CPLEX license, please try:
 
     Y = rgwas::validationDriver(inputFile = "TestInputN500000P10_3.csv",
     extremeValue = log(5e-8))
-
-    Please note that this run could take several hours to complete.
