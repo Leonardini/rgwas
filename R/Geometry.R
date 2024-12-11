@@ -4,7 +4,7 @@
 #' If verify = TRUE, also check that the input points lie below (above) the output points but no more than 1 below (above) them.
 #' The width specifies the width of the "tunnel" used; for best results, it should be close to 1, but strictly smaller than it.
 #' Use the standard Imai-Iri algorithm of given width.
-callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FALSE, CPP = FALSE, fname = "Test.csv") {
+callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FALSE, CPP = TRUE, fname = "Test.csv") {
   stopifnot(width <= 1)
   if (nrow(extremePoints) == 0) {
     return(list(breakpoints = NA, inputSize = 0, input = extremePoints))
@@ -24,7 +24,7 @@ callImaiIri = function(extremePoints, verify = FALSE, width = WIDTH, dryRun = FA
       breakpoints <- points
     } else {
       readr::write_csv(points, fname)
-      cmdName <- "/Users/lchindelevitch/Downloads/rgwas/plfoptq"
+      cmdName <- "/src/plfoptq"
       breakpoints <- system2(cmdName, args = c(fname, width/2), stdout = TRUE) %>%
         stringr::str_split_fixed(",", 2) %>%
         magrittr::set_colnames(c("Total", "Sum")) %>%

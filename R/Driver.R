@@ -37,6 +37,9 @@ mainDriver = function(inputFile, type = "CNF", objective = "agreement", K = 3, L
       saveRDS(object = output, file = stringr::str_replace(miniFile, ext, stringr::str_c(specString,              '.RDS')))
     }
     output
+  } else {
+    print(paste("Not executing the required computation because the output file", outFileSum, "already exists."))
+    print("To force a recomputation, please delete the file and try again.")
   }
 }
 
