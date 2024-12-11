@@ -171,7 +171,6 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
       rhs[lastAndRow + 2 * K + (5:6)] <- c(-Xvalues[1], -Yvalues[1])
     }
   }
-  Control = makeControlLines()
   if (!is.na(boundValue)) {
     numConst = numConst + 1
     rowInds  = c(rowInds, rep(numConst, numVar))
@@ -189,6 +188,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     UB      [numVar - numExtraVar + (1:3)]      = c(maxValues$Sum, maxValues$Total, maxValues$Sum)
     constDir[numConst - (numExtraConst + !is.na(boundValue)) + c(1, 2, 4, numSeg + 5, numSeg + 6)] = "E"
   }
+  Control = makeControlObject()
   solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, ub = UB, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
   solution$xopt %<>%
     magrittr::set_names(coln)

@@ -21,10 +21,10 @@ callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.c
     if (nrow(points) <= 2) {
       breakpoints <- points
     } else {
-      executable_path <- system.file("bin", "plfoptq", package = utils::packageName())
-      if (file.exists(executable_path)) {
+      execPath <- system.file("bin", "plfoptq", package = "rgwas")
+      if (file.exists(execPath)) {
         readr::write_csv(points, fname)
-        breakpoints <- system2(executable_path, args = c(fname, width/2), stdout = TRUE) %>%
+        breakpoints <- system2(execPath, args = c(fname, width/2), stdout = TRUE) %>%
           stringr::str_split_fixed(",", 2) %>%
           magrittr::set_colnames(c("Total", "Sum")) %>%
           tibble::as_tibble() %>%

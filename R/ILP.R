@@ -1,5 +1,5 @@
 #' Produce instructions controlling the execution of a CPLEX optimization
-makeControlLines = function(timeLimit = TIME_LIMIT, probeLevel = PROBE_LEVEL, emphasis = EMPHASIS, varSelect = VAR_SELECT, cutLevel = CUT_LEVEL) {
+makeControlObject = function(timeLimit = TIME_LIMIT, probeLevel = PROBE_LEVEL, emphasis = EMPHASIS, varSelect = VAR_SELECT, cutLevel = CUT_LEVEL) {
   Control = list()
   if (!is.na(timeLimit))   { Control$tilim         = timeLimit }
   if (!is.na(probeLevel))  { Control$probe         = probeLevel}

@@ -9,10 +9,10 @@ MY_K = KLIST
 MY_L = LLIST
 EXT = ".csv"
 LOW_P = TRUE
-MAX_P = ifelse(LOW_P, 1e-3, 5e-8)
+LOW_PVALUE  = 1e-3
+HIGH_PVALUE = 5e-8
+MAX_P = ifelse(LOW_P, LOW_PVALUE, HIGH_PVALUE)
 THOUSAND = 1000
-TOP_DIR = Sys.getenv(x = "CPLEX_STUDIO_DIR201", unset = "", names = NA)
-CPLEX_DIR = ifelse(TOP_DIR != "", TOP_DIR, "/Applications/CPLEX_Studio_Community201/cplex/bin/x86-64_osx/")
 
 #' Settings for geometric functions in Geometry.R
 #' Width of the field determining how much we can be off by from the boundary
