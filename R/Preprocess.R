@@ -262,7 +262,7 @@ prepareExtras = function(extraDefinitions, ind, goodInds, extremeValue, ns, sumY
   curDefinitions <- extraDefinitions[c(paste0("S", ind), paste0("T", ind)), c(1, 1 + goodInds), drop = FALSE]
   curRFile <- paste0(ifelse(is.null(baseFilename), "Test", baseFilename), "I", ind, "C", index, "Boundary", extremeValue, ".csv")
   curPBounds    <- computePValueBounds(N = ns[ind], nPlus = sumYs[ind], pMax = extremeValue)
-  curBoundaries <- callImaiIri(curPBounds, dryRun = FALSE, width = WIDTH, fname = curRFile)[[1]]
+  curBoundaries <- callImaiIri(curPBounds, width = WIDTH, fname = curRFile)[[1]]
   if (file.exists(curRFile)) {
     file.remove(curRFile)
   }
