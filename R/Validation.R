@@ -3,7 +3,7 @@
 #' If shuffle = FALSE, the first half of the patients go into discovery and the second into validation; if TRUE, simulate an RCT.
 #' @export
 validationDriver = function(inputFile, type = "CNF", objective = "agreement", complement = FALSE, extremeValue = log(MAX_P),
-                            Klist = KLIST, Llist = LLIST, index = 0, outputAssociations = FALSE, shuffle = TRUE) {
+                            Klist = KLIST, Llist = LLIST, index = 0, outputAssociations = FALSE, shuffle = TRUE, SEED = 987654321L) {
   stopifnot(extremeValue <= 0)
   ext <- stringr::str_sub(inputFile, start = -4)
   if (stringr::str_sub(inputFile, -3) == ".gz") {
@@ -38,7 +38,7 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
       redFilename <- stringr::str_replace(miniFile, ext, paste0(curSNP, "_", 1, ext))
       readr::write_csv(redTab, redFilename)
       results[[curSNP]] <- fullValidation(redFilename, type = type, objective = objective, extremeValue = extremeValue,
-                           Klist = Klist, Llist = Llist, index = index * THOUSAND + ind, nPheno = nPheno, shuffle = shuffle)
+                           Klist = Klist, Llist = Llist, index = index * THOUSAND + ind, nPheno = nPheno, shuffle = shuffle, seed = SEED)
     }
   }
   if (outputAssociations) {
@@ -47,7 +47,7 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
                 tibble::as_tibble(rownames = "association"), stringr::str_replace(miniFile, ext, '_Associations.csv'))
     N <- nrow(myMatrices$genotypes)
     if (shuffle) {
-      set.seed(MY_SEED)
+      set.seed(SEED)
       first <- which(runif(N) <= 0.5)
     } else {
       first <- 1:(round(N/2))
@@ -65,9 +65,10 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
   results
 }
 
-fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist, index = 0, removeInput = TRUE, nPheno = 0, shuffle = FALSE) {
+fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist, index = 0, removeInput = TRUE, nPheno = 0,
+                          shuffle = FALSE, seed) {
   stopifnot(extremeValue <= 0)
-  splitNames <- splitFile(inputFile, type = type, shuffle = shuffle)
+  splitNames <- splitFile(inputFile, type = type, shuffle = shuffle, seed = seed)
   stopifnot(length(Klist) == length(Llist))
   initRes <- tibble::tibble()
   valRes  <- tibble::tibble()
@@ -105,12 +106,12 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
   fullRes
 }
 
-splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -4)), type = "CNF", shuffle = FALSE) {
+splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -4)), type = "CNF", shuffle = FALSE, seed) {
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
   inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
   N <- nrow(inputTab)
   if (shuffle) {
-    set.seed(MY_SEED)
+    set.seed(seed)
     firstHalf <- which(runif(N) <= 0.5)
   } else {
     firstHalf <- 1:(round(N/2))

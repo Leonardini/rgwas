@@ -93,6 +93,8 @@ Installation instructions
 
 10)  If you expect to run this code on large inputs and have patience and
     a CPLEX license, please try:
+    
+    set.seed(987654321L)
 
     Y = rgwas::validationDriver(inputFile = "TestInputN500000P10_3.csv",
-    extremeValue = log(5e-8), shuffle = FALSE)
+    extremeValue = log(5e-8), shuffle = TRUE)

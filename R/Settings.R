@@ -1,6 +1,5 @@
 #' Settings for driver functions in Driver.R and Validation.R
 OPTIMIZATION = TRUE #' TRUE means optimization mode; FALSE means triage mode
-MY_SEED = 123456789L
 MY_TYPES = "DNF"
 MY_OBJECTIVES = "agreement"
 KLIST = c(rep(1:3, 3),        1, 5)
