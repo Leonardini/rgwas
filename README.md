@@ -37,7 +37,7 @@ Installation instructions
     Once installed (or if you already have it), restart R and run the
     commands:
 
-    library(devtools) devtools::install_github("bichkd/rgwas")
+    library(devtools);    devtools::install_github("bichkd/rgwas")
 
 4)  In order to provide the correct parameter settings to CPLEX, add the
     following line to your .Rprofile (this is normally located in your
@@ -86,9 +86,13 @@ Installation instructions
 
     X = rgwas::mainDriver(inputFile = "TestInputN5000P5_3.csv",
     extremeValue = log(1e-3))
+    
+    If everything has been configured correctly, the following should return TRUE:
+    
+    all(X[[1]]$formula == c("", "(p3 OR p5)  AND  (p1 OR p3 OR p4)  AND  (p1 OR p2)", ""))
 
 10)  If you expect to run this code on large inputs and have patience and
     a CPLEX license, please try:
 
     Y = rgwas::validationDriver(inputFile = "TestInputN500000P10_3.csv",
-    extremeValue = log(5e-8))
+    extremeValue = log(5e-8), shuffle = FALSE)
