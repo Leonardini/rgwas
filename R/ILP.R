@@ -1,4 +1,5 @@
 #' Produce instructions controlling the execution of a CPLEX optimization
+#' @noRd
 makeControlObject = function(timeLimit = TIME_LIMIT, probeLevel = PROBE_LEVEL, emphasis = EMPHASIS, varSelect = VAR_SELECT, cutLevel = CUT_LEVEL) {
   Control = list()
   if (!is.na(timeLimit))   { Control$tilim         = timeLimit }
@@ -25,6 +26,7 @@ makeControlObject = function(timeLimit = TIME_LIMIT, probeLevel = PROBE_LEVEL, e
 #' The return value is a list with two components; the first one is a table of statistics which includes the optimal formulas,
 #' and the second one is a matrix containing the complex phenotypes corresponding to each of these formulas, which may be empty
 #' If outputAssociations = TRUE, then the output additionally contains the matrix of single genotype - phenotype associations
+#' @noRd
 createAndSolveILPs =  function(inputTab, numSNPs = 1, objective = "agreement", type = "CNF", K = 3, L = 3, complement = 2,
                                 baseFilename = NULL, index = 0, outputAssociations = FALSE, strata = TRUE, extremeValue = log(MAX_P)) {
   stopifnot(objective %in% c("agreement","covariance"))

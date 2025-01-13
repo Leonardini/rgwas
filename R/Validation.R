@@ -1,6 +1,15 @@
-#' Validation driver
+#' Run `reverseGWAS` on a discovery and validation split of the data.
+#'
 #' Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
-#' If shuffle = FALSE, the first half of the patients go into discovery and the second into validation; if TRUE, simulate an RCT.
+#'
+#' @inheritParams mainDriver
+#' @param Klist,Llist Integer vectors of values for `K` (number of clauses) and `L` (size of clauses); they must have the same length!
+#' @param shuffle Perform an RCT? If `TRUE` (the default), simulate an RCT; otherwise, the first half of the patients (input rows) go into discovery and the second half, into validation.
+#' @param SEED Integer seed for the random number generator; keeping it consistent between runs generates the same RCT patient split, thus ensuring reproducible results; default: `987654321`.
+#'
+#' @examples
+#' # Y <- rgwas::validationDriver(inputFile = "TestInputN500000P10_3.csv.gz", extremeValue = log(5e-8), shuffle = TRUE)
+#'
 #' @export
 validationDriver = function(inputFile, type = "CNF", objective = "agreement", complement = FALSE, extremeValue = log(MAX_P),
                             Klist = KLIST, Llist = LLIST, index = 0, outputAssociations = FALSE, shuffle = TRUE, SEED = 987654321L) {

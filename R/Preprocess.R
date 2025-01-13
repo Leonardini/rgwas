@@ -1,5 +1,6 @@
 #' Compute the matrix of pairwise covariances between columns of matrix1 and matrix2, assumed to have the same number of rows
 #' If scaleUp = TRUE, do not normalize by the number of non-missing pairs.
+#' @noRd
 computeCovariances = function(matrix1, matrix2, scaleUp = TRUE) {
   stopifnot(nrow(matrix1) == nrow(matrix2))
   scaledCovariances <- cov(matrix1, matrix2, use = "pairwise.complete.obs")
@@ -14,6 +15,7 @@ computeCovariances = function(matrix1, matrix2, scaleUp = TRUE) {
 #' Compute the column with best metric in matrix2 for each column of matrix1, returning both its value (arg1) and name (arg2).
 #' The matrices are assumed (without checking) to have the same number of rows and to have binary values (0/1).
 #' If fisher = TRUE use the Fisher exact p-value, otherwise chi-squared log p-value.
+#' @noRd
 computeBestPValues = function(matrix1, matrix2, fisher = TRUE) {
   M <- nrow(matrix1)
   stopifnot(nrow(matrix2) == M)
@@ -53,6 +55,7 @@ computeBestPValues = function(matrix1, matrix2, fisher = TRUE) {
 }
 
 #' Compute the matrix of pairwise agreements between columns of matrix1 and matrix2, assumed to have the same number of rows
+#' @noRd
 computeAgreements = function(matrix1, matrix2) {
   stopifnot(nrow(matrix1) == nrow(matrix2))
   N1 <- ncol(matrix1)
@@ -77,6 +80,7 @@ computeAgreements = function(matrix1, matrix2) {
 
 #' Compute, for a given N and nPlus, the set of critical value pairs (i, j) such that the 2x2 contingency table
 #' with row sums nPlus and N - nPlus, and column sums i and N - i has log p-value below pMax when its top left entry is at least j.
+#' @noRd
 computePValueBounds = function(N, nPlus, pMax) {
   print(paste("The log p-value being considered as the cutoff is", pMax))
   print(paste("Preparing p-value bounds with N =", N, "and nPlus =", nPlus))
@@ -110,6 +114,7 @@ computePValueBounds = function(N, nPlus, pMax) {
 #' Prepare a genotype and a phenotype matrix based on an inputTab and a specified number of SNPs, numSNPs
 #' If complement =  1 or 2, each genotype  is present twice, the second time in negated form.
 #' If complement = -1 or 2, each phenotype is present twice, the second time in negated form.
+#' @noRd
 prepareMatrices = function(inputTab, numSNPs, complement) {
   IDs <- inputTab %>%
     dplyr::pull("ID")
@@ -136,6 +141,7 @@ prepareMatrices = function(inputTab, numSNPs, complement) {
 }
 
 #' Prepare the coefficients and the extra scores based on a specified genotype matrix and objective function.
+#' @noRd
 prepareCoeffsAndExtraScores = function(genotypes, objective, sumYs, ns, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
   N <- ncol(genotypes)
   coeffsTrue  <- sumYs
@@ -153,10 +159,11 @@ prepareCoeffsAndExtraScores = function(genotypes, objective, sumYs, ns, TPscore 
 #' Reduce an input consisting of a phenotype matrix and a matrix of objective function vectors (same # of rows)
 #' Optionally, take a matrix of genotypes and if that input is not NULL, also return a matrix of multiplicities extraDef
 #' The return value is a list containing:
-#' - the reduced phenotype and objective matrices
-#' - the status of each row and column: FALSE if it has been removed, TRUE if it has been preserved
-#' - the vector of extra scores to be added to the objective function
-#' - optionally, a matrix of extra definitions specifying the multiplicity and total weight of each surviving position
+#' * the reduced phenotype and objective matrices
+#' * the status of each row and column: FALSE if it has been removed, TRUE if it has been preserved
+#' * the vector of extra scores to be added to the objective function
+#' * optionally, a matrix of extra definitions specifying the multiplicity and total weight of each surviving position
+#' @noRd
 reducePhenotypesAndObjectives = function(phenotypes, objVectors, genotypes = NULL) {
   stopifnot(nrow(objVectors) == nrow(phenotypes))
   rowStatuses <- rep(TRUE, nrow(phenotypes))
@@ -228,6 +235,7 @@ reducePhenotypesAndObjectives = function(phenotypes, objVectors, genotypes = NUL
 }
 
 #' NB: the extreme value is in log-space
+#' @noRd
 prepareExtremeValues = function(extremeValue, type, singleValues, singleBestRatio = Inf, useTighterBound = FALSE) {
   extremeValues <- rep(extremeValue, length(singleValues))
   if (!is.null(extremeValue)) {
@@ -243,6 +251,7 @@ prepareExtremeValues = function(extremeValue, type, singleValues, singleBestRati
 }
 
 #' Prepare the upper cutoffs based on the input, type and objective function
+#' @noRd
 prepareBoundValues = function(extremeValues, type, objective, ns, sumYs, coeffsTrue, coeffsAgree) {
   startBound <- NA
   if (any(is.null(extremeValues))) {
@@ -257,6 +266,7 @@ prepareBoundValues = function(extremeValues, type, objective, ns, sumYs, coeffsT
 }
 
 #' Prepare the extra information relating to the boundary
+#' @noRd
 prepareExtras = function(extraDefinitions, ind, goodInds, extremeValue, ns, sumYs, baseFilename, index = 0L) {
   stopifnot(extremeValue <= 0)
   curDefinitions <- extraDefinitions[c(paste0("S", ind), paste0("T", ind)), c(1, 1 + goodInds), drop = FALSE]

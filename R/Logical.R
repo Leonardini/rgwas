@@ -1,4 +1,5 @@
 #' Compute the optimum value an output shoud have in order to compare it to the actual optimum value
+#' @noRd
 computeOptValue = function(myTab, objective, coeffsTrue, coeffsAgree, ind, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
   initTab <- matrix(0, 2, 2, dimnames = list(c("FALSE", "TRUE"), c("FALSE", "TRUE")))
   initTab[rownames(myTab), colnames(myTab)] %<>%
@@ -15,6 +16,7 @@ computeOptValue = function(myTab, objective, coeffsTrue, coeffsAgree, ind, TPsco
 
 #' Compute the p-value of the Cochran-Mantel-Haenszel test, estimating the association of genotype to phenotype
 #' stratifying by a secondary phenotype; exact = TRUE is a Fisher exact test analog; correct = TRUE is a continuity correction
+#' @noRd
 computeStratifiedPVal = function(genotype, phenotypeC, phenotypeS, exact = FALSE, correct = FALSE) {
   microTabs <- tibble::tibble(A = genotype, B = phenotypeC, C = phenotypeS) %>%
     dplyr::filter(!is.na(A) & !is.na(B) & !is.na(C)) %>%
@@ -35,6 +37,7 @@ computeStratifiedPVal = function(genotype, phenotypeC, phenotypeS, exact = FALSE
 #' The arguments are similar to the function below, except that the genotype is not supplied and phenotypes must be a matrix
 #' The objVector specifies the vector of objective function values to apply to each entry of the phenotype during optimization
 #' The boundValue parameter specifies a bound on the objective function; not achieving this bound makes the problem infeasible
+#' @noRd
 createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, filename = "Test.lp", boundValue = NA,
                                 extraConstraints = NULL) {
   if (length(extraConstraints) == 2 && any(is.na(extraConstraints[[1]]))) {

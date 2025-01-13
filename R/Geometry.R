@@ -2,6 +2,7 @@
 #' Return the breakpoints of this function, which are guaranteed to be as few as possible in number (see the original paper).
 #' The width specifies the width of the "tunnel" used; for best results, it should be close to 1, but strictly smaller than it.
 #' Use the standard Imai-Iri algorithm of given width.
+#' @noRd
 callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.csv") {
   stopifnot(width <= 1)
   if (nrow(extremePoints) == 0) {
@@ -73,6 +74,7 @@ callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.c
 #' If below = TRUE, check that the boundary lies below the PWLF instead (abbreviation used: PWLF = piecewise linear function).
 #' If reportCoincident = FALSE, also return a list of all checkpoints that coincide exactly with one of the endpoints.
 #' Return TRUE if the condition is fulfilled; otherwise print out the details of the earliest found violation, return FALSE.
+#' @noRd
 checkPosition = function(endpoints, checkpoints, below = TRUE, reportCoincident = FALSE) {
   checkpoints %<>%
     as.matrix

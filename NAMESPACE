@@ -3,8 +3,3 @@
 export(mainDriver)
 export(test0)
 export(validationDriver)
-import(rlang)
-importFrom(glue,glue)
-importFrom(lifecycle,deprecated)
-importFrom(magrittr,"%<>%")
-importFrom(magrittr,"%>%")

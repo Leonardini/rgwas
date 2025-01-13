@@ -1,4 +1,5 @@
 #' Extract solution from the output of CPLEX via Rcplex
+#' @noRd
 extractSolution = function(solution, prefix1 = PREFIX1, prefix2 = PREFIX2, optFactor = -1L, ignoreNegatives = !is.null(prefix2)) {
   usedVars = solution$xopt
   if (ignoreNegatives) {
@@ -49,6 +50,7 @@ extractSolution = function(solution, prefix1 = PREFIX1, prefix2 = PREFIX2, optFa
 }
 
 #' Postprocess a given solution of an ILP to put it into a convenient format: the phenotype and the clause
+#' @noRd
 postprocessSolution = function(origPhenotypes, solutionMatrix, type, complement = 0) {
   if (any(is.na(solutionMatrix)) || all(solutionMatrix == 0)) {
     return(list(solution = matrix(ifelse(type == "CNF", TRUE, FALSE), nrow(origPhenotypes), 1), clause = ""))
@@ -86,6 +88,7 @@ postprocessSolution = function(origPhenotypes, solutionMatrix, type, complement 
 
 #' Compute a number of 2 x 2 statistics based on a tibble containing at a minimum the columns TP, FP, FN and TN
 #' If pvals = TRUE, additionally compute the Fisher exact and chi-squared p-values (in log-space).
+#' @noRd
 computeStats = function(Tibble, pvals = TRUE) {
   Tibble %<>%
     dplyr::mutate(Pos = TP + FN, Neg = TN + FP) %>%
@@ -108,6 +111,7 @@ computeStats = function(Tibble, pvals = TRUE) {
 }
 
 #' Prepare the final output from a sequence of ILPs, one per SNP, in the form of 2 tables: summary and phenotype
+#' @noRd
 prepareOutput = function(output, complexPhenotypes, SNP, ID, type, numSegments, objective, singleRes, boundValues, ns, MH,
                          outputAssociations = FALSE) {
   myTab <- matrix(unlist(output), nrow = length(output), dimnames = list(names(output), names(output[[1]])), byrow = TRUE)
