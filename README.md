@@ -49,11 +49,12 @@ Note that the MyParameters.prm file is distributed alongisde the rgwas package.
     Y = rgwas::optimizingDriver(inputFile = system.file("extdata", "TestInputN5000P5_1.csv", package = "rgwas"), startPValue = log(1e-3))
 ```
 
-If everything has been configured correctly, the following should return TRUE:
+If everything has been configured correctly, all of the following should return TRUE:
 
 ```         
     all(X[[1]]$formula == c("", "(p1 OR p3) AND (p1 OR p2)", ""))
-    all(Y[[1]]$formula[1] == X[[1]]$formula[2])
+    all(Y[[1]]$formula ==       "(p3 OR p5) AND (p1 OR p2)")
+    Y[[1]]$LogFisherExactP < X[[1]]$LogFisherExactP[2]
 ```
 
 7)  If you expect to run this code on large inputs and have patience and a CPLEX license, please try:
@@ -114,10 +115,14 @@ In addition, the filename must specify the number of genotype columns immediatel
 
 Please see the example files provided with the package.
 
-## Output file formats
-
-Please note that 
-
 ## Exported functions
 
 There are three exported functions:
+
+`mainDriver`, which takes a multi-genotype and multi-phenotype input with a single parameter setting for K (clause number) and L (clause size), and checks the feasibility of a target value of the association statistic.
+
+`optimizingDriver`, which takes a single genotype and multi-phenotype input with a single K and L, and identifies the optimal value of the association statistic.
+
+`validationDriver`, which performs a discovery-validation split of a multi-genotype and multi-phenotype input file and an exploration of multiple K and L values, and identifies the optimal value of the association statistic for each combination of values.
+
+In every case, both the summary statistics as well as the phenotype combination leading to the genotype-phenotype association(s) are returned.
