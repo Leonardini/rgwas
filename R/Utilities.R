@@ -97,8 +97,8 @@ extractMinimalColumns = function(inputMatrix) {
 #' Parse a formula of type "CNF" or "DNF" into a standard matrix representation
 #' @noRd
 parseFormula = function(Formula, type) {
-  outerString   <- ifelse(type == "CNF", " AND ", " OR ")
-  innerString   <- ifelse(type == "DNF", " AND ", " OR ")
+  outerString   <- ifelse(type == "CNF", "AND", "OR")
+  innerString   <- ifelse(type == "DNF", "AND", "OR")
   splitFormula <- stringr::str_split(Formula, outerString)[[1]]
   fullySplitFormula <- purrr::map(splitFormula, function(x) {
     x %>%

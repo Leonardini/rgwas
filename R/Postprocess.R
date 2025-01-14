@@ -80,8 +80,8 @@ postprocessSolution = function(origPhenotypes, solutionMatrix, type, complement 
                           })
   curSolution <- apply(subPhenotypes, 1, ifelse(type == "CNF", all, any))
   clauses <- sapply(splitInds,
-                    function(x) {paste(rownames(solutionMatrix)[x], collapse = ifelse(type == "CNF", " OR ", " AND "))})
-  clause <- paste0("(", paste(clauses, collapse = paste(")", ifelse(type == "CNF", " AND ", " OR "), "(")), ")")
+                    function(x) { paste(rownames(solutionMatrix)[x], collapse = ifelse(type == "CNF", " OR ", " AND "))})
+  clause <- stringr::str_squish(paste0("(", paste(clauses, collapse = paste(")", ifelse(type == "CNF", " AND ", " OR "), "(")), ")"))
   output <- list(solution = curSolution, clause = clause)
   output
 }
