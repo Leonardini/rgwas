@@ -11,7 +11,7 @@ callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.c
   firstPoint <- extremePoints %>%
     dplyr::slice(1) %>%
     dplyr::select(Total, Sum)
-  extremePoints %<>%
+  extremePoints <- extremePoints %>%
     dplyr::group_by(Total) %>%
     dplyr::summarize(Sum = max(Sum), .groups = "keep") %>%
     dplyr::ungroup() %>%
@@ -37,15 +37,15 @@ callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.c
     }
   }
   if (!CPP) {
-    extremePoints %<>%
+    extremePoints <- extremePoints %>%
       removeCollinear %>%
       dplyr::mutate_at("Sum", ~{magrittr::add(., 1/2)})
   }
   pointsP <- extremePoints
   pointsM <- extremePoints
-  pointsP %<>%
+  pointsP <- pointsP %>%
     dplyr::mutate(Sum = Sum + width/2)
-  pointsM %<>%
+  pointsM <- pointsM %>%
     dplyr::mutate(Sum = Sum - width/2)
   if (!CPP) {
     breakpoints <- ImaiIriAlgorithm(pointsP, pointsM)
@@ -61,7 +61,7 @@ callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.c
   # }
   if (nrow(breakpoints) > 0) {
     if (min(breakpoints$Sum) != firstPoint$Sum) {
-      breakpoints %<>%
+      breakpoints <- breakpoints %>%
         dplyr::bind_rows(firstPoint) %>%
         dplyr::arrange(Total, Sum)
     }
@@ -76,9 +76,9 @@ callImaiIri = function(extremePoints, width = WIDTH, CPP = TRUE, fname = "Test.c
 #' Return TRUE if the condition is fulfilled; otherwise print out the details of the earliest found violation, return FALSE.
 #' @noRd
 checkPosition = function(endpoints, checkpoints, below = TRUE, reportCoincident = FALSE) {
-  checkpoints %<>%
+  checkpoints <- checkpoints %>%
     as.matrix
-  endpoints %<>%
+  endpoints <- endpoints %>%
     as.matrix
   stopifnot(all(dplyr::near(range(endpoints[,1]), range(checkpoints[,1]), tol = TOL)))
   correct <- TRUE
@@ -91,7 +91,7 @@ checkPosition = function(endpoints, checkpoints, below = TRUE, reportCoincident 
   for (ind in seq_len(nrow(checkpoints))) {
     curPoint <- checkpoints[ind,]
     while (!(curPoint[1] - curLeft[1] >= -TOL && curPoint[1] - curRight[1] <= -TOL) && pos < nrow(endpoints) - 1) {
-      pos %<>%
+      pos <- pos %>%
         magrittr::add(1)
       curLeft  <- endpoints[pos,]
       curRight <- endpoints[pos + 1,]

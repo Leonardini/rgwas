@@ -3,21 +3,21 @@
 extractSolution = function(solution, prefix1 = PREFIX1, prefix2 = PREFIX2, optFactor = -1L, ignoreNegatives = !is.null(prefix2)) {
   usedVars = solution$xopt
   if (ignoreNegatives) {
-    usedVars %<>%
+    usedVars <- usedVars %>%
       magrittr::extract(. >= 0)
   }
-  usedVars %<>%
+  usedVars <- usedVars %>%
     magrittr::extract(!dplyr::near(., 0, tol = TOL)) %>%
     tibble::enframe() %>%
     dplyr::filter(stringr::str_starts(name, prefix1))
   if (!is.null(prefix2)) {
-    usedVars %<>%
+    usedVars <- usedVars %>%
       dplyr::mutate(sub = stringr::str_remove_all(name, paste0("^", prefix1)) %>%
                       stringr::str_split_fixed(prefix2, n = 2),
                     type = as.integer(sub[,1]),
                     iter = as.integer(sub[,2]))
   } else {
-    usedVars %<>%
+    usedVars <- usedVars %>%
       dplyr::mutate(type = stringr::str_remove_all(name, paste0("^", prefix1)) %>%
                       as.integer(),
                     iter = 1L)
@@ -56,7 +56,7 @@ postprocessSolution = function(origPhenotypes, solutionMatrix, type, complement 
     return(list(solution = matrix(ifelse(type == "CNF", TRUE, FALSE), nrow(origPhenotypes), 1), clause = ""))
   }
   mode(solutionMatrix) = "logical"
-  solutionMatrix %<>%
+  solutionMatrix <- solutionMatrix %>%
     deleteZeroColumns %>%
     extractMinimalColumns
   if ((complement < 0 || complement > 1) && type %in% c("CNF", "DNF")) { # negated phenotypes
@@ -90,7 +90,7 @@ postprocessSolution = function(origPhenotypes, solutionMatrix, type, complement 
 #' If pvals = TRUE, additionally compute the Fisher exact and chi-squared p-values (in log-space).
 #' @noRd
 computeStats = function(Tibble, pvals = TRUE) {
-  Tibble %<>%
+  Tibble <- Tibble %>%
     dplyr::mutate(Pos = TP + FN, Neg = TN + FP) %>%
     dplyr::mutate(PredPos = TP + FP, PredNeg = TN + FN) %>%
     dplyr::mutate(Correct = TP + TN, Incorrect = FP + FN) %>%
@@ -103,7 +103,7 @@ computeStats = function(Tibble, pvals = TRUE) {
     dplyr::mutate(Jaccard = TP/(TP + FP + FN)) %>%
     dplyr::mutate(MCC = (TP - Pos / Total * PredPos) / (sqrt(Pos / Total * Neg) * sqrt(PredPos / Total * PredNeg)))
   if (pvals) {
-    Tibble %<>% dplyr::mutate(
+    Tibble <- Tibble %>% dplyr::mutate(
       LogChiSquaredP  = pchisq(Total * MCC^2, df = 1, lower.tail = FALSE, log.p = TRUE),
       LogFisherExactP = phyper(TP - 1, Pos, Neg, PredPos, lower.tail = FALSE, log.p = TRUE))
   }
@@ -115,29 +115,29 @@ computeStats = function(Tibble, pvals = TRUE) {
 prepareOutput = function(output, complexPhenotypes, SNP, ID, type, numSegments, objective, singleRes, boundValues, ns, MH,
                          outputAssociations = FALSE) {
   myTab <- matrix(unlist(output), nrow = length(output), dimnames = list(names(output), names(output[[1]])), byrow = TRUE)
-  myTab %<>%
+  myTab <- myTab %>%
     tibble::as_tibble() %>%
     # dplyr::mutate(simpleFormula = map_chr(formula, ~{simplifyFormula(., type = type)}), .after = formula) %>%
     dplyr::mutate(SNP = SNP) %>%
     dplyr::select(SNP, everything())
-  myTab %<>%
+  myTab <- myTab %>%
     dplyr::mutate(numSegments = numSegments) %>%
     dplyr::mutate_at(c("TP", "FP", "TN", "FN"), as.integer) %>%
     computeStats()
   if (!all(is.na(MH))) {
-    myTab %<>%
+    myTab <- myTab %>%
       dplyr::mutate(LogCMHExactP = MH)
   }
-  myTab %<>%
+  myTab <- myTab %>%
     dplyr::mutate_at(c("time", "gap", "opt"), readr::parse_double)
   if (objective == "covariance") {
-    myTab %<>%
+    myTab <- myTab %>%
       dplyr::mutate_at("opt", ~magrittr::divide_by(., ns))
   }
-  myTab %<>%
+  myTab <- myTab %>%
     dplyr::bind_cols(tibble::tibble(bestSingle = singleRes$phenotype, bestSingleStat = singleRes$value, computedBounds = boundValues))
   if (!is.null(complexPhenotypes)) {
-    complexPhenotypes %<>%
+    complexPhenotypes <- complexPhenotypes %>%
       tibble::as_tibble() %>%
       dplyr::mutate_all(as.numeric) %>%
       dplyr::mutate(ID = ID) %>%

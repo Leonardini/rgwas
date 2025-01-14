@@ -90,7 +90,8 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
                                   K = curK, L = curL, startIndex = index * THOUSAND + ind)
     curSummary <- curResult$summary
     if (!is.null(curSummary)) {
-      initRes %<>% dplyr::bind_rows(dplyr::bind_cols(tibble::tibble(K = curK, L = curL), curSummary))
+      initRes <- initRes %>%
+        dplyr::bind_rows(dplyr::bind_cols(tibble::tibble(K = curK, L = curL), curSummary))
       if (curSummary$status[1] %in% c("feasible", "optimal")) {
         ext <- stringr::str_sub(splitNames[1], -4)
         specString <- paste(c("", type, "K", curK, "L", curL), collapse = "_")
@@ -100,7 +101,7 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
         BD <- ifelse("LogCMHExactP" %in% names(curSummary), curSummary$bestSingle, NA)
         valResults <- generateValidationPhenotype(splitNames[2], curFormula, type = type, K = curK, L = curL, bestDiscovery = BD,
                                                   outputSummary = FALSE, outputPhenotype = FALSE, outputAssociations = FALSE)
-        valRes %<>%
+        valRes <- valRes %>%
           dplyr::bind_rows(dplyr::bind_cols(tibble::tibble(K = curK, L = curL), valResults$summary))
       }
     }
@@ -175,10 +176,10 @@ generateValidationPhenotype = function(inputFile, Formula, type, objective = "ag
     curGeno <- genotypes[, ind]
     myT <- matrix(0, 2, 2, dimnames = list(c("FALSE", "TRUE"), c("FALSE", "TRUE")))
     extraT <- table(as.logical(curGeno), as.logical(outputPheno))
-    myT[rownames(extraT), colnames(extraT)] %<>%
+    myT[rownames(extraT), colnames(extraT)] <- myT[rownames(extraT), colnames(extraT)] %>%
       magrittr::add(extraT)
     checkR <- tibble::tibble(TP = myT["TRUE", "TRUE"], FP = myT["FALSE","TRUE"], FN = myT["TRUE","FALSE"], TN = myT["FALSE","FALSE"])
-    curOutput %<>%
+    curOutput <- curOutput %>%
       dplyr::bind_cols(TP = checkR$TP, FP = checkR$FP, FN = checkR$FN, TN = checkR$TN)
     if (!is.na(bestDiscovery)) {
       bestSingle = as.logical(phenotypes[, bestDiscovery, drop = TRUE])
@@ -196,10 +197,10 @@ generateValidationPhenotype = function(inputFile, Formula, type, objective = "ag
     dplyr::mutate_at(c("TP", "FP", "TN", "FN"), as.integer) %>%
     computeStats()
   if (!all(is.na(MH))) {
-    outputSum %<>%
+    outputSum <- outputSum %>%
       dplyr::mutate(LogCMHExactP = MH)
   }
-  outputSum %<>%
+  outputSum <- outputSum %>%
     dplyr::mutate(bestSingle = singleRes$phenotype, bestSingleStat = singleRes$value)
   complexPhenotypes = tibble::tibble(phenotype = outputPheno) %>%
     magrittr::set_colnames(colnames(genotypes)) %>%

@@ -12,7 +12,7 @@ normalizeVector = function(vector) {
 #' The return value is positive if the turn is a right turn, negative if the turn is a left turn, 0 if the points are collinear
 getAngle = function(threePointSet) {
   stopifnot(all(dim(threePointSet) == c(3, 2)))
-  threePointSet %<>%
+  threePointSet <- threePointSet %>%
     as.matrix
   point1 <- threePointSet[1, ]
   point2 <- threePointSet[2, ]
@@ -40,7 +40,7 @@ removeCollinear = function(pointSet, tol = TOL) {
     }
   }
   keepPoints <- which(!badInds)
-  pointSet %<>%
+  pointSet <- pointSet %>%
     dplyr::slice(keepPoints)
   pointSet
 }
@@ -49,7 +49,7 @@ removeCollinear = function(pointSet, tol = TOL) {
 #' Note: special cases are defined in the dependent functions for horizontal lines (slope = 0) and vertical lines (slope = Inf)
 findSlopeAndIntercept = function(endPoints) {
   stopifnot(nrow(endPoints) == 2)
-  endPoints %<>%
+  endPoints <- endPoints %>%
     as.matrix
   delta <- endPoints[2, ] - endPoints[1, ]
   slope <- delta[2]/delta[1]
@@ -198,9 +198,9 @@ ImaiIriAlgorithm = function(pointsP, pointsM) {
   allL <- vector("list")
   allR <- vector("list")
   for (sign in c("positive", "negative")) {
-    nextMap %<>%
+    nextMap <- nextMap %>%
       setNextPoint(getPoint(allPoints, computeIndex(1, sign, n)), getPoint(allPoints, computeIndex(2, sign, n)))
-    prevMap %<>%
+    prevMap <- prevMap %>%
       setPrevPoint(getPoint(allPoints, computeIndex(2, sign, n)), getPoint(allPoints, computeIndex(1, sign, n)))
     allP[[sign]] <- getPoint(allPoints, computeIndex(1, sign, n))
     allL[[sign]] <- getPoint(allPoints, computeIndex(1, sign, n))
@@ -220,9 +220,9 @@ ImaiIriAlgorithm = function(pointsP, pointsM) {
       while (!comparePoints(curPrev, curP) && checkObtuse(curPoint, curPrev, getPrevPoint(allPoints, prevMap, curPrev), sign)) {
         curPrev <- getPrevPoint(allPoints, prevMap, curPrev)
       }
-      nextMap %<>%
+      nextMap <- nextMap %>%
         setNextPoint(curPrev, curPoint)
-      prevMap %<>%
+      prevMap <- prevMap %>%
         setPrevPoint(curPoint, curPrev)
     }
     for (index in 1:2) {
@@ -234,21 +234,21 @@ ImaiIriAlgorithm = function(pointsP, pointsM) {
       if (!nextWindow && checkAcute(curPoint, curL, curR, signStar)) {
         indQ <- computeIndex(j, "computed", n)
         myIntersect <- makePoint(findIntersection(dplyr::bind_rows(curL, curR), dplyr::bind_rows(allP[[signStar]], allP[[signDiam]])), indQ)
-        allPoints %<>%
+        allPoints <- allPoints %>%
           setPoint(indQ, myIntersect)
         allP[[signDiam]][1,] <- allR[[signDiam]][1,]
         prevP <- getPoint(allPoints, computeIndex(i - 1, signStar, n))
         curP  <- getPoint(allPoints, computeIndex(i, signStar, n))
         indR <- computeIndex(j, "other", n)
         otherIntersect <- makePoint(findIntersection(dplyr::bind_rows(curL, curR), dplyr::bind_rows(prevP, curP)), indR)
-        allPoints %<>%
+        allPoints <- allPoints %>%
           setPoint(indR, otherIntersect)
         allP[[signStar]][1,] <- otherIntersect
-        j %<>%
+        j <- j %>%
           magrittr::add(1)
-        nextMap %<>%
+        nextMap <- nextMap %>%
           setNextPoint(otherIntersect, curP)
-        prevMap %<>%
+        prevMap <- prevMap %>%
           setPrevPoint(curP, otherIntersect)
         allR[[signStar]][1,] <- getPoint(allPoints, computeIndex(i, signStar, n))
         allR[[signDiam]][1,] <- getPoint(allPoints, computeIndex(i, signDiam, n))
@@ -280,12 +280,12 @@ ImaiIriAlgorithm = function(pointsP, pointsM) {
     supportLine <- rbind(allL[["negative"]], allR[["positive"]])
   }
   indQ <- computeIndex(m - 1, "computed", n)
-  allPoints %<>%
+  allPoints <- allPoints %>%
     setPoint(indQ, makePoint(findIntersection(supportLine, rbind(allP[[1]], allP[[2]])), indQ))
   indP <- computeIndex(n, "positive", n)
   indM <- computeIndex(n, "negative", n)
   indR <- computeIndex(m, "computed", n)
-  allPoints %<>%
+  allPoints <- allPoints %>%
     setPoint(indR, makePoint(findIntersection(supportLine, rbind(getPoint(allPoints, indP), getPoint(allPoints, indM))), indR))
   outputInds <- computeIndex(1, "computed", n):indR
   output <- allPoints %>%

@@ -47,7 +47,7 @@ deleteRepeatedRows = function(inputMatrix) {
 #' @noRd
 deleteZeroColumns = function(inputMatrix) {
   goodInds <- which(colSums(inputMatrix) > 0)
-  inputMatrix %<>%
+  inputMatrix <- inputMatrix %>%
     subset(select = goodInds)
   inputMatrix
 }
@@ -121,7 +121,7 @@ parseFormula = function(Formula, type) {
 #' @noRd
 applyFormula = function(parsedFormula, phenotypes, type) {
   stopifnot(all(rownames(parsedFormula) %in% colnames(phenotypes)))
-  phenotypes %<>%
+  phenotypes <- phenotypes %>%
     as.data.frame %>%
     dplyr::select(rownames(parsedFormula))
   outerFunction <- ifelse(type == "CNF", magrittr::and, magrittr::or)

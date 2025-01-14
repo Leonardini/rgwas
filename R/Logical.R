@@ -2,7 +2,7 @@
 #' @noRd
 computeOptValue = function(myTab, objective, coeffsTrue, coeffsAgree, ind, TPscore = 1, TNscore = 1, FPscore = -1, FNscore = -1) {
   initTab <- matrix(0, 2, 2, dimnames = list(c("FALSE", "TRUE"), c("FALSE", "TRUE")))
-  initTab[rownames(myTab), colnames(myTab)] %<>%
+  initTab[rownames(myTab), colnames(myTab)] <- initTab[rownames(myTab), colnames(myTab)] %>%
     magrittr::add(myTab)
   TP <- initTab["TRUE" , "TRUE" ]
   FP <- initTab["FALSE", "TRUE" ]
@@ -45,8 +45,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   }
   n <- nrow(phenotypes)
   p <- ncol(phenotypes)
-  goodEntries <- which(phenotypes == ifelse(type == "CNF", 1, 0), arr.ind = TRUE)
-  goodEntries %<>%
+  goodEntries <- which(phenotypes == ifelse(type == "CNF", 1, 0), arr.ind = TRUE) %>%
     tibble::as_tibble() %>%
     dplyr::arrange(row, col)
   N <- nrow(goodEntries)
@@ -75,15 +74,15 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     stopifnot(nrow(extraConstraints[[2]]) == 2)
     numSTCoeffs <- ncol(extraConstraints[[2]])
     numExtraVar <- 2 * numSeg + 3
-    numVar %<>%
+    numVar <- numVar %>%
       magrittr::add(numExtraVar)
     numExtraConst <- 2 * numSeg + 6
-    numConst %<>%
+    numConst <- numConst %>%
       magrittr::add(numExtraConst)
     numExtraNonZeros <- 2 * numSTCoeffs + 8 * numSeg + 4
-    numNonZeros %<>%
+    numNonZeros <- numNonZeros %>%
       magrittr::add(numExtraNonZeros)
-    coln %<>%
+    coln <- coln %>%
       c("Sum", "Total", "Z", paste0(rep("Z", numSeg), seq_len(numSeg)), paste0(rep("S", numSeg), seq_len(numSeg)))
   }
   fullObjVector <- rep(0, numVar)
@@ -121,7 +120,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
     rhs[lastOrRow + n * K + (1:n)] <- K - 1
   }
   if (type == "DNF") {
-    values[(3 * N + n) * K + (1:(3 * Sz + n))] %<>%
+    values[(3 * N + n) * K + (1:(3 * Sz + n))] <- values[(3 * N + n) * K + (1:(3 * Sz + n))] %>%
       magrittr::multiply_by(-1)
   }
   lastRange <- numNonZeros - ifelse(!is.null(extraConstraints), numExtraNonZeros, 0) - (2 * p * K) + 1:(p * K)
@@ -193,7 +192,7 @@ createAndSolveILP = function(phenotypes, objVector, type = "CNF", K = 3, L = 3, 
   }
   Control = makeControlObject()
   solution = Rcplex::Rcplex(cvec = fullObjVector, Amat = Mat, bvec = rhs, ub = UB, control = Control, objsense = "min", sense = constDir, vtype = varTypes)
-  solution$xopt %<>%
+  solution$xopt <- solution$xopt %>%
     magrittr::set_names(coln)
   Rcplex::Rcplex.close()
   output = extractSolution(solution)

@@ -6,7 +6,7 @@ computeCovariances = function(matrix1, matrix2, scaleUp = TRUE) {
   scaledCovariances <- cov(matrix1, matrix2, use = "pairwise.complete.obs")
   if (scaleUp) {
     numNonMissingPairs <- crossprod(!is.na(matrix1), !is.na(matrix2))
-    scaledCovariances %<>%
+    scaledCovariances <- scaledCovariances %>%
       magrittr::multiply_by(numNonMissingPairs - 1)
   }
   scaledCovariances
@@ -118,7 +118,7 @@ computePValueBounds = function(N, nPlus, pMax) {
 prepareMatrices = function(inputTab, numSNPs, complement) {
   IDs <- inputTab %>%
     dplyr::pull("ID")
-  inputTab %<>%
+  inputTab <- inputTab %>%
     dplyr::select(-ID) %>%
     as.matrix %>%
     magrittr::set_rownames(IDs)
@@ -128,12 +128,12 @@ prepareMatrices = function(inputTab, numSNPs, complement) {
   genotypes <- inputTab[, 1:numSNPs, drop = FALSE]
   if (complement > 0) {
     nGenotypes <- matrix(!genotypes, nrow(genotypes), dimnames = list(rownames(genotypes), paste0("NOT_", colnames(genotypes))))
-    genotypes %<>%
+    genotypes <- genotypes %>%
       cbind(nGenotypes)
   }
   if (complement > 1 || complement < 0) {
     nPhenotypes <- matrix(!phenotypes, nrow(phenotypes), dimnames = list(rownames(phenotypes), paste0("NOT_", colnames(phenotypes))))
-    phenotypes %<>%
+    phenotypes <- phenotypes %>%
       cbind(nPhenotypes)
   }
   output <- list(phenotypes = phenotypes, genotypes = genotypes)
@@ -184,10 +184,13 @@ reducePhenotypesAndObjectives = function(phenotypes, objVectors, genotypes = NUL
   allConstantRows <- c(allTrueRows, allFalseRows)
   if (length(allConstantRows) > 0) {
     rowStatuses[allConstantRows] <- FALSE
-    objVectors  %<>% magrittr::extract(-allConstantRows, , drop = FALSE)
-    phenotypes  %<>% magrittr::extract(-allConstantRows, , drop = FALSE)
+    objVectors <- objVectors %>%
+      magrittr::extract(-allConstantRows, , drop = FALSE)
+    phenotypes <- phenotypes %>%
+      magrittr::extract(-allConstantRows, , drop = FALSE)
     if (!is.null(genotypes)) {
-      genotypes %<>% magrittr::extract(-allConstantRows, , drop = FALSE)
+      genotypes <- genotypes %>%
+        magrittr::extract(-allConstantRows, , drop = FALSE)
     }
   }
   cSums <- colSums(phenotypes)
@@ -196,7 +199,8 @@ reducePhenotypesAndObjectives = function(phenotypes, objVectors, genotypes = NUL
   allConstantCols <- c(allTrueCols, allFalseCols)
   if (length(allConstantCols) > 0) {
     colStatuses[allConstantCols] <- FALSE
-    phenotypes  %<>% magrittr::extract(, -allConstantCols, drop = FALSE)
+    phenotypes <- phenotypes %>%
+      magrittr::extract(, -allConstantCols, drop = FALSE)
   }
   activeCols <- which(colStatuses)
   activeRows <- which(rowStatuses)
@@ -213,8 +217,10 @@ reducePhenotypesAndObjectives = function(phenotypes, objVectors, genotypes = NUL
   }
   if (!is.null(genotypes)) {
     usableColumns <- 1:(length(uniqueGroupsR) + 1)
-    extraDefS %<>% magrittr::extract(, usableColumns, drop = FALSE)
-    extraDefT %<>% magrittr::extract(, usableColumns, drop = FALSE)
+    extraDefS <- extraDefS %>%
+      magrittr::extract(, usableColumns, drop = FALSE)
+    extraDefT <- extraDefT %>%
+      magrittr::extract(, usableColumns, drop = FALSE)
     extraDef  <- rbind(extraDefS, extraDefT)
   }
   objVectors <- do.call(rbind, lapply(uniqueGroupsR, function(x) {
@@ -243,7 +249,7 @@ prepareExtremeValues = function(extremeValue, type, singleValues, singleBestRati
       altBounds <- singleValues %>%
         magrittr::subtract(log(singleBestRatio))
       altFunction <- ifelse(!useTighterBound, pmax, pmin)
-      extremeValues %<>%
+      extremeValues <- extremeValues %>%
         altFunction(altBounds, na.rm = TRUE)
     }
   }
@@ -259,7 +265,7 @@ prepareBoundValues = function(extremeValues, type, objective, ns, sumYs, coeffsT
   }
   boundValues <- rep(startBound, length(ns))
   if (type == "CNF" && objective == "agreement") {
-    boundValues %<>%
+    boundValues <- boundValues %>%
       magrittr::add(ns * coeffsTrue + sumYs * coeffsAgree)
   }
   boundValues
