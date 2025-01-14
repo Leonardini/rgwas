@@ -1,4 +1,4 @@
-# Installation instructions
+# Installation instructions for ReverseGWAS
 
 ## General cross-platform instructions
 
@@ -26,14 +26,14 @@ For instance, with a standard Mac installation this line typically looks like:
     install.packages("devtools")
 ```
 
-Once installed (or if you already have it), restart R and run the commands:
+4)  Once installed (or if you already have it), restart R and run the commands:
 
 ```         
     library(devtools)
     devtools::install_github("Leonardini/rgwas")
 ```
 
-4)  In order to provide the correct parameter settings to CPLEX, add the following line to your .Rprofile (this is normally located in your home directory, and you will need to provide your own path to rgwas):
+5)  In order to provide the correct parameter settings to CPLEX, add the following line to your .Rprofile (this is normally located in your home directory, and you will need to provide your own path to rgwas):
 
 ```         
     Sys.setenv(ILOG_CPLEX_PARAMETER_FILE="Absolute/Path/To/rgwas/MyParameters.prm")
@@ -41,7 +41,7 @@ Once installed (or if you already have it), restart R and run the commands:
 
 Note that the MyParameters.prm file is distributed alongisde the rgwas package.
 
-5)  To check that everything has been successfully installed, run the commands:
+6)  To check that everything has been successfully installed, run the commands:
 
 ```         
     library(rgwas)
@@ -51,10 +51,10 @@ Note that the MyParameters.prm file is distributed alongisde the rgwas package.
 If everything has been configured correctly, the following should return TRUE:
 
 ```         
-    all(X[[1]]\$formula == c("", "(p3 OR p5) AND (p1 OR p3 OR p4) AND (p1 OR p2)", ""))
+    all(X[[1]]$formula == c("", "(p3 OR p5) AND (p1 OR p3 OR p4) AND (p1 OR p2)", ""))
 ```
 
-6)  If you expect to run this code on large inputs and have patience and a CPLEX license, please try:
+7)  If you expect to run this code on large inputs and have patience and a CPLEX license, please try:
 
 ```         
 Y = rgwas::validationDriver(inputFile = system.file("extdata", "TestInputN500000P10_3.csv.gz", package = "rgwas"),
@@ -63,19 +63,21 @@ extremeValue = log(5e-8), shuffle = TRUE)
 
 ## Specific instructions for using compiled C++ code on Mac or Linux
 
-1)  If you wish to make use of compiled C++ code, you will need to manually download the rgwas package from GitHub; from the Terminal, run:
+1)  Begin by following steps 1, 2, 3, and 5 of the cross-platform instructions above, as necessary
+
+2)  If you wish to make use of compiled C++ code, you will need to manually download the rgwas package from GitHub instead of carrying out step 4 of the cross-platform instructions; from the Terminal, run:
 
 ```         
     git clone <https://github.com/Leonardini/rgwas.git>
 ```
 
-2)  On a Mac OS you may need to obtain the GCC compiler by installing homebrew following the instructions at <https://brew.sh/>, then running the following from the Terminal:
+3)  On a Mac OS you may need to obtain the GCC compiler by installing homebrew following the instructions at <https://brew.sh/>, then running the following from the Terminal:
 
 ```         
     brew install gcc
 ```
 
-3)  Create a .R subdirectory if one does not already exist in your home directory, and create a Makevars file within that directory if one does not already exist:
+4)  Create a .R subdirectory if one does not already exist in your home directory, and create a Makevars file within that directory if one does not already exist:
 
 ```         
     cd ~ 
@@ -84,19 +86,27 @@ extremeValue = log(5e-8), shuffle = TRUE)
     touch Makevars
 ```
 
-4)  Add or append the following two lines to this Makevars file:
+5)  Add or append the following two lines to this Makevars file (please note that this step must be done after steps 1 and 2 in the cross-platform instructions, during which the Makevars file must not contain these lines):
 
 ```         
     CC = /usr/local/bin/gcc-14
     CXX = /usr/local/bin/g++-14
 ```
 
-5)  Proceed with a local installation of the rgwas package by changing into the directory where you downloaded rgwas and issuing the command below within R:
+6)  Proceed with a local installation of the rgwas package by changing into the directory where you downloaded rgwas and issuing the command below within R:
 
 ```         
     devtools::install_local(path = ".", force = TRUE, configure.vars = "CC=/usr/local/bin/gcc-14 CXX=/usr/local/bin/g++-14")
 ```
 
-6)  To make sure everything worked as expected, please run step 5 (and possibly 6) from the cross-platform instructions
+7)  To make sure everything worked as expected, please run step 6 (and possibly 7) from the cross-platform instructions
 
-## 
+# Usage instructions for ReverseGWAS
+
+## Input file formats
+
+TO BE COMPLETED
+
+## Exported functions
+
+TO BE COMPLETED
