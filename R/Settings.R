@@ -5,8 +5,8 @@ MY_TYPES = "DNF"
 MY_OBJECTIVES = "agreement"
 KLIST = c(rep(1:3, 3),        1, 5)
 LLIST = c(rep(1:3, each = 3), 5, 1)
-MY_K = KLIST
-MY_L = LLIST
+MY_K = 2L
+MY_L = 2L
 EXT = ".csv"
 LOW_P = FALSE
 LOW_PVALUE  = 1e-3

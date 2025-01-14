@@ -2,6 +2,7 @@
 
 export("%>%")
 export(mainDriver)
+export(optimizingDriver)
 export(test0)
 export(validationDriver)
 importFrom(magrittr,"%>%")

@@ -46,19 +46,20 @@ Note that the MyParameters.prm file is distributed alongisde the rgwas package.
 ```         
     library(rgwas)
     X = rgwas::mainDriver(inputFile = system.file("extdata", "TestInputN5000P5_3.csv", package = "rgwas"), extremeValue = log(1e-3))
+    Y = rgwas::optimizingDriver(inputFile = system.file("extdata", "TestInputN5000P5_1.csv", package = "rgwas"), startPValue = log(1e-3))
 ```
 
 If everything has been configured correctly, the following should return TRUE:
 
 ```         
-    all(X[[1]]$formula == c("", "(p3 OR p5) AND (p1 OR p3 OR p4) AND (p1 OR p2)", ""))
+    all(X[[1]]$formula == c("", "(p1 OR p3) AND (p1 OR p2)", ""))
+    all(Y[[1]]$formula[1] == X[[1]]$formula[2])
 ```
 
 7)  If you expect to run this code on large inputs and have patience and a CPLEX license, please try:
 
 ```         
-Y = rgwas::validationDriver(inputFile = system.file("extdata", "TestInputN500000P10_3.csv.gz", package = "rgwas"),
-extremeValue = log(5e-8), shuffle = TRUE)
+    Z = rgwas::validationDriver(inputFile = system.file("extdata", "TestInputN500000P10_3.csv.gz", package = "rgwas"), extremeValue = log(5e-8), shuffle = TRUE)
 ```
 
 ## Specific instructions for using compiled C++ code on Mac or Linux
@@ -99,14 +100,24 @@ extremeValue = log(5e-8), shuffle = TRUE)
     devtools::install_local(path = ".", force = TRUE, configure.vars = "CC=/usr/local/bin/gcc-14 CXX=/usr/local/bin/g++-14")
 ```
 
-7)  To make sure everything worked as expected, please run step 6 (and possibly 7) from the cross-platform instructions
+7)  To make sure everything worked as expected, please run step 6 (and possibly 7) from the cross-platform instructions above.
 
 # Usage instructions for ReverseGWAS
 
 ## Input file formats
 
-TO BE COMPLETED
+Please note that all input files must follow the same format: a patient identifier column named ID (typically a character), followed by one or more genotype columns, followed by one or more phenotype columns. 
+
+The genotype and phenotype columns can be either numeric or logical, but if numeric, all values must be 0 or 1; note that missing genotype values are allowed, but missing phenotype values are not. 
+
+In addition, the filename must specify the number of genotype columns immediately before the extension, which must be .csv[.gz] or .tsv[.gz] - the compression is optional.
+
+Please see the example files provided with the package.
+
+## Output file formats
+
+Please note that 
 
 ## Exported functions
 
-TO BE COMPLETED
+There are three exported functions:

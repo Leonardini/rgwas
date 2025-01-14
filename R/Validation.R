@@ -41,7 +41,8 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
     curSNP <- SNPs[ind]
     targetOutFile <- stringr::str_replace(miniFile, ext, paste0(curSNP, "_", 1, "_", "FullResults", ext))
     if (file.exists(targetOutFile)) {
-      print(paste("Skipping SNP", curSNP))
+      print(paste("Skipping SNP", curSNP, "because the output file", targetOutFile, "already exists."))
+      print("To force a recomputation for this SNP, please delete the file and try again.")
     } else {
       redTab <- dplyr::bind_cols(IDs, genotypes %>% dplyr::select(all_of(curSNP)), phenotypes)
       redFilename <- stringr::str_replace(miniFile, ext, paste0(curSNP, "_", 1, ext))
@@ -133,7 +134,9 @@ splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -
     dplyr::slice(secondHalf)
   inputFile1 <- stringr::str_replace(inputFile, ext, '_Train_1.csv')
   inputFile2 <- stringr::str_replace(inputFile, ext,  '_Test_1.csv')
-  stopifnot(!file.exists(inputFile1) && !file.exists(inputFile2))
+  if (file.exists(inputFile1) || file.exists(inputFile2)) {
+    stop(paste("The file", inputFile, "was partitioned into discovery and validation files before; please delete them and try again"))
+  }
   readr::write_csv(Tab1, inputFile1)
   readr::write_csv(Tab2, inputFile2)
   output <- c(inputFile1, inputFile2)

@@ -19,15 +19,15 @@ validationDriver(
 )
 }
 \arguments{
-\item{inputFile}{The absolute path to an input file. This can be a CSV or TSV file, either uncompressed or compressed with gz. NB: the last integer before the file extension must contain the number of genotype columns!}
+\item{inputFile}{The absolute path to an input file. This can be a CSV or TSV file, either uncompressed or compressed with gz. It must start with a patient identifier column named ID (typically a character), followed by one or more genotype columns, followed by one or more phenotype columns. NB: the file extension must be immediately preceded by an integer stating the number of genotype columns.}
 
-\item{type}{The type of phenotype combinations to search over; the allowed values are "CNF", or conjunctive normal form (the default) and "DNF", or disjunctive normal form}
+\item{type}{The type of phenotype combinations to search over; the allowed values are "CNF", or conjunctive normal form (the default) and "DNF", or disjunctive normal form.}
 
-\item{objective}{The association function between genotype and complex phenotype to optimise; the allowed values are "agreement" (the default) and "covariance"}
+\item{objective}{The association function between genotype and complex phenotype to optimise; the allowed values are "agreement" (the default) and "covariance".}
 
-\item{complement}{Integer between -2 and 1, or a value coercible to one. If complement =  1 or 2, each genotype's negated form is added in preprocessing. If complement = -1 or 2, each phenotype's negated form is added in preprocessing.}
+\item{complement}{Integer between \code{-2} and \code{1}, or a value coercible to one. If it is  \code{1} or \code{2}, each genotype's negated form is added in preprocessing. If it is \code{-1} or \code{2}, each phenotype's negated form is added in preprocessing.}
 
-\item{extremeValue}{The target value of the association function (by default, the Fisher exact test p-value). The default is log(5e-8), i.e. genome-wide significance. NB: it must be in logarithmic space (i.e. non-positive)!}
+\item{extremeValue}{The target value of the association function (by default, the Fisher exact test p-value). The default is log(5e-8), i.e. genome-wide significance. NB: it must be in logarithmic space (i.e. non-positive).}
 
 \item{Klist, Llist}{Integer vectors of values for \code{K} (number of clauses) and \code{L} (size of clauses); they must have the same length!}
 
