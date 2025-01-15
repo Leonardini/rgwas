@@ -8,14 +8,9 @@ CXXFLAGS = -std=c++17 -O3 -march=native
 all: ../inst/bin/plfoptq
 
 ../inst/bin/plfoptq:
-	@if $(CXX) $(PKG_CPPFLAGS) $(CXXFLAGS) $(PKG_CXXFLAGS) -o plfoptq plfoptq.cpp $(PKG_LIBS); then \
-		echo "plfoptq.cpp compiled successfully"; \
-		mkdir -p ../inst/bin
-		cp plfoptq ../inst/bin/
-	else \
-		echo "plfoptq.cpp failed to compile"; \
-		touch ../inst/no_cpp_compilation; \
-	fi
+	$(CXX) $(PKG_CPPFLAGS) $(CXXFLAGS) $(PKG_CXXFLAGS) -o plfoptq plfoptq.cpp $(PKG_LIBS)
+	mkdir -p ../inst/bin
+	cp plfoptq ../inst/bin/
 
 clean:
-	rm -f plfoptq *.so *.o ../inst/bin/plfoptq ../inst/no_cpp_compilation
+	rm -f plfoptq *.so *.o
