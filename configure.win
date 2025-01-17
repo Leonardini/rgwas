@@ -1,0 +1,7 @@
+@echo off
+
+rem Renaming the source file to skip C++ compilation on Windows
+ren src\plfoptq.cpp plfoptq.nocompile
+echo # Skipping C++ compilation on Windows. >> src\Makevars.win
+echo # Skipping C++ compilation on Windows. >> src\Makevars.in
+echo Skipping C++ compilation on Windows. Installed pure R version will be MUCH SLOWER.
