@@ -3,8 +3,8 @@
 # Check if quadmath.h is available
 echo 'int main(){return 0;}' > conftest.cpp
 if ! $CXX -std=c++17 conftest.cpp -lquadmath -o conftest > /dev/null 2>&1; then
-  echo "# quadmath.h not found, skipping C++ compilation." >> src/Makevars
-  echo "# quadmath.h not found, skipping C++ compilation" >> src/Makevars.in
+  echo "# quadmath.h not found, skipping C++ compilation." > src/Makevars
+  echo "# quadmath.h not found, skipping C++ compilation" > src/Makevars.in
   echo "quadmath.h not found. Skipping C++ compilation. Installed pure R version will be MUCH SLOWER."
   mv src/plfoptq.cpp src/plfoptq.nocompile
 else
