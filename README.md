@@ -70,7 +70,7 @@ If everything has been configured correctly, all of the following should return 
 2)  If you wish to make use of compiled C++ code, you will need to manually download the rgwas package from GitHub instead of carrying out step 4 of the cross-platform instructions; from the Terminal, run:
 
 ```         
-    git clone <https://github.com/Leonardini/rgwas.git>
+    git clone https://github.com/Leonardini/rgwas.git
 ```
 
 3)  On a Mac OS you may need to obtain the GCC compiler by installing homebrew following the instructions at <https://brew.sh/>, then running the following from the Terminal:
