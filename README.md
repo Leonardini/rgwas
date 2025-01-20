@@ -65,21 +65,15 @@ If everything has been configured correctly, all of the following should return 
 
 ## Specific instructions for using compiled C++ code on Mac or Linux
 
-1)  Begin by following steps 1, 2, 3, and 5 of the cross-platform instructions above, as necessary
+1)  Begin by following steps 1, 2 and 3 of the cross-platform instructions above, as necessary
 
-2)  If you wish to make use of compiled C++ code, you will need to manually download the rgwas package from GitHub instead of carrying out step 4 of the cross-platform instructions; from the Terminal, run:
-
-```         
-    git clone <https://github.com/Leonardini/rgwas.git>
-```
-
-3)  On a Mac OS you may need to obtain the GCC compiler by installing homebrew following the instructions at <https://brew.sh/>, then running the following from the Terminal:
+2)  On a Mac OS you may need to obtain the GCC compiler by installing homebrew following the instructions at <https://brew.sh/>, then running the following from the Terminal:
 
 ```         
     brew install gcc
 ```
 
-4)  Create a .R subdirectory if one does not already exist in your home directory, and create a Makevars file within that directory if one does not already exist:
+3)  Create a .R subdirectory if one does not already exist in your home directory, and create a Makevars file within that directory if one does not already exist:
 
 ```         
     cd ~ 
@@ -88,28 +82,26 @@ If everything has been configured correctly, all of the following should return 
     touch Makevars
 ```
 
-5)  Add or append the following two lines to this Makevars file (please note that this step must be done after steps 1 and 2 in the cross-platform instructions, during which the Makevars file must not contain these lines):
+4)  Add or append the following lines to this Makevars file (please note that this step must be done after steps 1 and 2 in the cross-platform instructions, during which the Makevars file must not contain these lines):
 
 ```         
     CC = /usr/local/bin/gcc-14
     CXX = /usr/local/bin/g++-14
+    CXX11 = /usr/local/bin/g++-14
+    CXX14 = /usr/local/bin/g++-14
+    CXX17 = /usr/local/bin/g++-14
+    CXX20 = /usr/local/bin/g++-14
 ```
 
-6)  Proceed with a local installation of the rgwas package by changing into the directory where you downloaded rgwas and issuing the command below within R:
-
-```         
-    devtools::install_local(path = ".", force = TRUE, configure.vars = "CC=/usr/local/bin/gcc-14 CXX=/usr/local/bin/g++-14")
-```
-
-7)  To make sure everything worked as expected, please run step 6 (and possibly 7) from the cross-platform instructions above.
+5)  Proceed with steps 4 through 7 of the cross-platform instructions
 
 # Usage instructions for ReverseGWAS
 
 ## Input file formats
 
-Please note that all input files must follow the same format: a patient identifier column named ID (typically a character), followed by one or more genotype columns, followed by one or more phenotype columns. 
+Please note that all input files must follow the same format: a patient identifier column named ID (typically a character), followed by one or more genotype columns, followed by one or more phenotype columns.
 
-The genotype and phenotype columns can be either numeric or logical, but if numeric, all values must be 0 or 1; note that missing genotype values are allowed, but missing phenotype values are not. 
+The genotype and phenotype columns can be either numeric or logical, but if numeric, all values must be 0 or 1; note that missing genotype values are allowed, but missing phenotype values are not.
 
 In addition, the filename must specify the number of genotype columns immediately before the extension, which must be .csv[.gz] or .tsv[.gz] - the compression is optional.
 
