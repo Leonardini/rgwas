@@ -35,7 +35,7 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
     tibble::as_tibble()
   SNPs <- colnames(genotypes)
   results <- vector("list", length(SNPs)) %>%
-    set_names(SNPs)
+    magrittr::set_names(SNPs)
   nPheno <- ncol(phenotypes)
   for (ind in 1:length(SNPs)) {
     curSNP <- SNPs[ind]
@@ -170,7 +170,7 @@ generateValidationPhenotype = function(inputFile, Formula, type, objective = "ag
     curValues <- as.vector(computeCovariances(genotypes, outputPheno, scaleUp = FALSE))
   }
   outputS <- vector("list", numSNPs) %>%
-    set_names(colnames(genotypes))
+    magrittr::set_names(colnames(genotypes))
   MH <- rep(NA, numSNPs)
   for (ind in 1:numSNPs) {
     curName <- colnames(genotypes)[ind]
