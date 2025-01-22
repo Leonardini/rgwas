@@ -55,24 +55,24 @@
 
 6)  To check that everything has been successfully installed, run the commands:
 
-```         
+    ```R         
     library(rgwas)
     X = rgwas::mainDriver(inputFile = system.file("extdata", "TestInputN5000P5_3.csv", package = "rgwas"), extremeValue = log(1e-3))
     Y = rgwas::optimizingDriver(inputFile = system.file("extdata", "TestInputN5000P5_1.csv", package = "rgwas"), startPValue = log(1e-3))
-```
+    ```
     If everything has been configured correctly, all of the following should return TRUE:
 
-```         
+    ```R         
     all(X[[1]]$formula == c("", "(p1 OR p3) AND (p1 OR p2)", ""))
     all(Y[[1]]$formula ==       "(p3 OR p5) AND (p1 OR p2)")
     Y[[1]]$LogFisherExactP < X[[1]]$LogFisherExactP[2]
-```
+    ```
 
 7)  If you expect to run this code on large inputs and have patience and a CPLEX license, please try:
 
-```         
+    ```R         
     Z = rgwas::validationDriver(inputFile = system.file("extdata", "TestInputN500000P10_3.csv.gz", package = "rgwas"), extremeValue = log(5e-8), shuffle = TRUE)
-```
+    ```
 
 ## Specific instructions for using compiled C++ code on Mac or Linux
 
