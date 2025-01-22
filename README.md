@@ -30,25 +30,27 @@
 
 3)  If you do not already have devtools installed, please install it from R via
 
-```         
+    ```R         
     install.packages("devtools")
-```
+    ```
 
 4)  Once installed (or if you already have it), restart R and run the commands:
 
-```         
+    ```  R       
     library(devtools)
     devtools::install_github("Leonardini/rgwas")
-```
+    ```
+    
     This will install the rgwas package.
     For Linux and Mac, we provide a fast C++ implementation for one part of the approach ("tunnel search"). This requires a compiler that supports the quadmath library.
     If this library is not available, rgwas will fall back on a pure R implementation. See below for special instructions on a Mac.
 
 5)  In order to provide the correct parameter settings to CPLEX, add the following line to your .Rprofile (this is normally located in your home directory, and you will need to provide your own path to rgwas):
 
-```         
+    ```R         
     Sys.setenv(ILOG_CPLEX_PARAMETER_FILE="Absolute/Path/To/rgwas/MyParameters.prm")
-```
+    ```
+    
     Note that the MyParameters.prm file is distributed alongisde the rgwas package.
 
 6)  To check that everything has been successfully installed, run the commands:
