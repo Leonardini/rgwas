@@ -9,22 +9,17 @@
     Note the installation directory as you may need to provide it in the next step.
 
 2)  If you do not already have Rcplex installed, add the following line to your .Rprofile (this is normally located in your home directory):
-
 ```         
     Sys.setenv(CPLEX_BIN="Absolute/Path/To/CPLEX/binary")
 ```
-
     For instance, with a standard Mac installation this line typically looks like:
-
 ```         
     Sys.setenv(CPLEX_BIN="/Applications/CPLEX_Studio_Community201/cplex/bin/x86-64_osx/cplex")
 ```
-
     Then install Rcplex as you normally would. Generally, this would be something like
 ```         
     install.packages("Rcplex")
 ```
-
     Please make sure Rcplex is successfully installed before proceeding.
 
 3)  If you do not already have devtools installed, please install it from R via
@@ -39,7 +34,6 @@
     library(devtools)
     devtools::install_github("Leonardini/rgwas")
 ```
-
     This will install the rgwas package.
     For Linux and Mac, we provide a fast C++ implementation for one part of the approach ("tunnel search"). This requires a compiler that supports the quadmath library.
     If this library is not available, rgwas will fall back on a pure R implementation. See below for special instructions on a Mac.
@@ -49,8 +43,7 @@
 ```         
     Sys.setenv(ILOG_CPLEX_PARAMETER_FILE="Absolute/Path/To/rgwas/MyParameters.prm")
 ```
-
-Note that the MyParameters.prm file is distributed alongisde the rgwas package.
+    Note that the MyParameters.prm file is distributed alongisde the rgwas package.
 
 6)  To check that everything has been successfully installed, run the commands:
 
@@ -59,8 +52,7 @@ Note that the MyParameters.prm file is distributed alongisde the rgwas package.
     X = rgwas::mainDriver(inputFile = system.file("extdata", "TestInputN5000P5_3.csv", package = "rgwas"), extremeValue = log(1e-3))
     Y = rgwas::optimizingDriver(inputFile = system.file("extdata", "TestInputN5000P5_1.csv", package = "rgwas"), startPValue = log(1e-3))
 ```
-
-If everything has been configured correctly, all of the following should return TRUE:
+    If everything has been configured correctly, all of the following should return TRUE:
 
 ```         
     all(X[[1]]$formula == c("", "(p1 OR p3) AND (p1 OR p2)", ""))
