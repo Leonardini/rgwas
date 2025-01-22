@@ -9,17 +9,23 @@
     Note the installation directory as you may need to provide it in the next step.
 
 2)  If you do not already have Rcplex installed, add the following line to your .Rprofile (this is normally located in your home directory):
-```         
+
+    ```R
     Sys.setenv(CPLEX_BIN="Absolute/Path/To/CPLEX/binary")
-```
+    ```
+
     For instance, with a standard Mac installation this line typically looks like:
-```         
+
+    ```R
     Sys.setenv(CPLEX_BIN="/Applications/CPLEX_Studio_Community201/cplex/bin/x86-64_osx/cplex")
-```
-    Then install Rcplex as you normally would. Generally, this would be something like
-```         
+    ```
+
+    Then install Rcplex as you normally would. Generally, this would be something like:
+
+    ```R
     install.packages("Rcplex")
-```
+    ```
+
     Please make sure Rcplex is successfully installed before proceeding.
 
 3)  If you do not already have devtools installed, please install it from R via
