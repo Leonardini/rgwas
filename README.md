@@ -14,18 +14,18 @@
     Sys.setenv(CPLEX_BIN="Absolute/Path/To/CPLEX/binary")
 ```
 
-For instance, with a standard Mac installation this line typically looks like:
+    For instance, with a standard Mac installation this line typically looks like:
 
 ```         
     Sys.setenv(CPLEX_BIN="/Applications/CPLEX_Studio_Community201/cplex/bin/x86-64_osx/cplex")
 ```
 
-Then proceed to install Rcplex as you normally would. Generally, this would be something like
+    Then install Rcplex as you normally would. Generally, this would be something like
 ```         
     install.packages("Rcplex")
 ```
 
-Please make sure Rcplex is successfully installed before any further steps.
+    Please make sure Rcplex is successfully installed before proceeding.
 
 3)  If you do not already have devtools installed, please install it from R via
 
@@ -40,9 +40,9 @@ Please make sure Rcplex is successfully installed before any further steps.
     devtools::install_github("Leonardini/rgwas")
 ```
 
-This will install the rgwas package.
-For Linux and Mac, we provide a fast C++ implementation for one part of the approach ("tunnel search"). This requires a compiler that supports the quadmath library.
-If this library is not available, rgwas will fall back on a pure R implementation. See below for special instructions on a Mac.
+    This will install the rgwas package.
+    For Linux and Mac, we provide a fast C++ implementation for one part of the approach ("tunnel search"). This requires a compiler that supports the quadmath library.
+    If this library is not available, rgwas will fall back on a pure R implementation. See below for special instructions on a Mac.
 
 5)  In order to provide the correct parameter settings to CPLEX, add the following line to your .Rprofile (this is normally located in your home directory, and you will need to provide your own path to rgwas):
 
