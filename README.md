@@ -74,7 +74,7 @@
     Z = rgwas::validationDriver(inputFile = system.file("extdata", "TestInputN500000P10_3.csv.gz", package = "rgwas"), extremeValue = log(5e-8), shuffle = TRUE)
     ```
 
-## Specific instructions for using compiled C++ code on Mac or Linux
+## Specific instructions for using compiled C++ code on Mac
 
 1)  Begin by following steps 1, 2 and 3 of the cross-platform instructions above, as necessary
 
