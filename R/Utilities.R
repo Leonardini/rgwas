@@ -102,11 +102,12 @@ parseFormula = function(Formula, type) {
   splitFormula <- stringr::str_split(Formula, outerString)[[1]]
   fullySplitFormula <- purrr::map(splitFormula, function(x) {
     x %>%
-      stringr::str_trim %>%
+      stringr::str_trim() %>%
       stringr::str_remove("^\\(") %>%
       stringr::str_remove("\\)$") %>%
       stringr::str_split(innerString) %>%
-      magrittr::extract2(1) })
+      magrittr::extract2(1) %>%
+      stringr::str_trim() })
   allUsedNames <- sort(unique(unlist(fullySplitFormula)))
   M <- length(allUsedNames)
   N <- length(splitFormula)
@@ -126,7 +127,7 @@ applyFormula = function(parsedFormula, phenotypes, type) {
     dplyr::select(rownames(parsedFormula))
   outerFunction <- ifelse(type == "CNF", magrittr::and, magrittr::or)
   innerFunction <- ifelse(type == "DNF", magrittr::and, magrittr::or)
-  allTerms <- map(1:ncol(parsedFormula), ~{purrr::reduce(phenotypes[, (parsedFormula[, .] == 1), drop = FALSE], innerFunction)})
+  allTerms <- purrr::map(1:ncol(parsedFormula), ~{purrr::reduce(phenotypes[, (parsedFormula[, .] == 1), drop = FALSE], innerFunction)})
   finalOutput   <- purrr::reduce(allTerms, outerFunction)
   if (class(finalOutput) != "matrix") { finalOutput <- matrix(finalOutput, ncol = 1) }
   finalOutput
