@@ -127,7 +127,7 @@ applyFormula = function(parsedFormula, phenotypes, type) {
   outerFunction <- ifelse(type == "CNF", magrittr::and, magrittr::or)
   innerFunction <- ifelse(type == "DNF", magrittr::and, magrittr::or)
   allTerms <- map(1:ncol(parsedFormula), ~{purrr::reduce(phenotypes[, (parsedFormula[, .] == 1), drop = FALSE], innerFunction)})
-  finalOutput   <- reduce(allTermds, outerFunction)
+  finalOutput   <- purrr::reduce(allTerms, outerFunction)
   if (class(finalOutput) != "matrix") { finalOutput <- matrix(finalOutput, ncol = 1) }
   finalOutput
 }
