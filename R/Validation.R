@@ -22,7 +22,7 @@ validationDriver = function(inputFile, type = "CNF", objective = "agreement", co
     miniFile <- inputFile
   }
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
-  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
+  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"), progress = FALSE)
   numSNPs <- stringr::str_extract(miniFile, paste0("([0-9]+)", ext)) %>%
     stringr::str_remove(ext) %>%
     readr::parse_integer()
@@ -138,7 +138,7 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
 #' @noRd
 splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -4)), type = "CNF", shuffle = FALSE, seed) {
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
-  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
+  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"), progress = FALSE)
   N <- nrow(inputTab)
   if (shuffle) {
     set.seed(seed)
@@ -191,7 +191,7 @@ generateValidationPhenotype = function(inputFile, Formula, type, objective = "ag
     stringr::str_remove(ext) %>%
     readr::parse_integer()
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
-  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
+  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"), progress = FALSE)
   myMatrices <- prepareMatrices(inputTab, numSNPs, complement = -1)
   phenotypes <- myMatrices$phenotypes
   parsedFormula <- parseFormula(Formula, type = type)

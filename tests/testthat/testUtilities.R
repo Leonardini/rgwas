@@ -7,6 +7,15 @@ test_that("extractUniqueRows works on duplicates", {
   expect_equal(length(res[[2]]), 2)         # grouping information returned
 })
 
+test_that("extractUniqueRows works on edge cases", {
+  for (Q in 0:1) {
+    X <- matrix(0, nrow = Q, ncol = 3, byrow = TRUE)
+    res <- extractUniqueRows(X)
+    expect_equal(nrow(res[[1]]), Q)           # correct number of unique rows
+    expect_equal(length(res[[2]]), 1)         # correct grouping information
+  }
+})
+
 test_that("deleteZeroColumns removes all-zero cols", {
   X <- matrix(c(1,0,0,
                 0,0,1), ncol = 3, byrow = TRUE)
@@ -21,6 +30,13 @@ test_that("findSubsetRows identifies logical subsets", {
                 FALSE, FALSE), ncol = 2, byrow = TRUE)
   v <- c(TRUE, FALSE)
   expect_equal(findSubsetRows(M, v), c(TRUE, FALSE, TRUE))
+})
+
+test_that("pruneSupersets removes logical supersets", {
+  M <- matrix(c(TRUE, FALSE, TRUE,
+                FALSE, TRUE, FALSE,
+                FALSE, FALSE, TRUE), ncol = 3, byrow = TRUE)
+  expect_equal(nrow(pruneSupersets(M)), 2)
 })
 
 test_that("parseFormula + applyFormula roundtrip for CNF/DNF", {

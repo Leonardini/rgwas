@@ -30,7 +30,7 @@ mainDriver = function(inputFile, type = "CNF", objective = "agreement", K = MY_K
     miniFile <- stringr::str_sub(inputFile, 1, -4)
   }
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
-  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
+  inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"), progress = FALSE)
   numSNPs <- stringr::str_extract(miniFile, paste0("([0-9]+)", ext)) %>%
     stringr::str_remove(ext) %>%
     readr::parse_integer()
