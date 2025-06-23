@@ -1,6 +1,6 @@
 #' Test0
-#' @export
+#' @noRd
 test0 <- function() {
-    print("boop.")
+    print("Testing that everything is loaded correctly")
 }
 

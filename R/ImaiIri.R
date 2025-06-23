@@ -1,4 +1,5 @@
 #' Turn an input 2-dimensional vector into a unit vector in the same direction
+#' @noRd
 normalizeVector = function(vector) {
   len <- pracma::hypot(vector[1], vector[2])
   if (dplyr::near(len, 0)) {
@@ -10,6 +11,7 @@ normalizeVector = function(vector) {
 
 #' Determine the (sign of the) angle by which we need to turn to get from point 1 to point 3 via point 2 (ignore magnitudes!)
 #' The return value is positive if the turn is a right turn, negative if the turn is a left turn, 0 if the points are collinear
+#' @noRd
 getAngle = function(threePointSet) {
   stopifnot(all(dim(threePointSet) == c(3, 2)))
   threePointSet <- threePointSet %>%
@@ -28,6 +30,7 @@ getAngle = function(threePointSet) {
 
 #' Remove all but the first and the last point of any group of three or more consecutive input points that are collinear.
 #' Note that this function is idempotent (at least in exact arithmetic), i.e. running it twice is the same as running it once.
+#' @noRd
 removeCollinear = function(pointSet, tol = TOL) {
   N <- nrow(pointSet)
   if (N <= 2) {
@@ -47,6 +50,7 @@ removeCollinear = function(pointSet, tol = TOL) {
 
 #' Find the slope and y-intercept of a line given by a 2 x 2 matrix, whose rows are points and columns are x and y coordinates
 #' Note: special cases are defined in the dependent functions for horizontal lines (slope = 0) and vertical lines (slope = Inf)
+#' @noRd
 findSlopeAndIntercept = function(endPoints) {
   stopifnot(nrow(endPoints) == 2)
   endPoints <- endPoints %>%
@@ -66,6 +70,7 @@ findSlopeAndIntercept = function(endPoints) {
 
 #' Find the intersection between two lines, each specified by a pair of points (2 x 2 matrices; row = point, columns = coords)
 #' Note: does not check that the intersection point lies between the starting and ending points of each segment!
+#' @noRd
 findIntersection = function(endPoints1, endPoints2) {
   line1 <- findSlopeAndIntercept(endPoints1)
   line2 <- findSlopeAndIntercept(endPoints2)
@@ -91,6 +96,7 @@ findIntersection = function(endPoints1, endPoints2) {
 
 #' Compare two points numerically, up to a specified number of dimensions Dim (which can be smaller than the full dimension)
 #' Return TRUE if they are numerically identical, FALSE otherwise. Do not check that the points have the same dimensions!
+#' @noRd
 comparePoints = function(point1, point2, Dim = 2) {
   comp <- TRUE
   for (ind in 1:Dim) {
@@ -102,56 +108,66 @@ comparePoints = function(point1, point2, Dim = 2) {
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 computeIndex <- function(index, sign, N) {
   allSigns <- c("positive", "negative", "computed", "other")
   return(index + (which(allSigns == sign) - 1) * N)
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 getIndex <- function(point) {
   return(point %>% dplyr::pull(rowid))
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 getPoint <- function(pointSet, index) {
   return(pointSet %>% dplyr::slice(index))
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 getPrevPoint <- function(pointSet, prevMap, point) {
   return(getPoint(pointSet, prevMap[getIndex(point)]))
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 getNextPoint <- function(pointSet, nextMap, point) {
   return(getPoint(pointSet, nextMap[getIndex(point)]))
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 setPoint <- function(pointSet, index, point) {
   pointSet[index, ] <- point
   pointSet
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 setPrevPoint <- function(prevMap, curPoint, prevPoint) {
   prevMap[getIndex(curPoint)] <- getIndex(prevPoint)
   prevMap
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 setNextPoint <- function(nextMap, curPoint, nextPoint) {
   nextMap[getIndex(curPoint)] <- getIndex(nextPoint)
   nextMap
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 makePoint <- function(point, index) {
   output <- tibble::tibble(Total = point[1], Sum = point[2], rowid = index)
   output
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 getSignedAngle <- function(point1, point2, point3, sign) {
   myPoints <- dplyr::bind_rows(point1, point2, point3) %>%
     dplyr::select(-rowid) %>%
@@ -160,12 +176,14 @@ getSignedAngle <- function(point1, point2, point3, sign) {
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 checkAcute <- function(point1, point2, point3, sign, tol = TOL) {
   myAngle <- getSignedAngle(point1, point2, point3, sign)
   return(myAngle > tol)
 }
 
 #' Auxiliary function for the Imai-Iri algorithm
+#' @noRd
 checkObtuse <- function(point1, point2, point3, sign, tol = TOL) {
   myAngle <- getSignedAngle(point1, point2, point3, sign)
   return(myAngle < -tol)
@@ -175,6 +193,7 @@ checkObtuse <- function(point1, point2, point3, sign, tol = TOL) {
 #' Assume without checking that the x-coordinates of pointsP and pointsM are identical, and ordered from smallest to largest.
 #' Also assume without checking that the y-coordinates of pointsP are pointwise larger than those of pointsM.
 #' This implementation is a corrected version of the pseudocode in Sabine Neubauer's student thesis (University of Karlsruhe).
+#' @noRd
 ImaiIriAlgorithm = function(pointsP, pointsM) {
   n <- nrow(pointsP)
   stopifnot(nrow(pointsM) == n)

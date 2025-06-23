@@ -117,6 +117,25 @@ fullValidation = function(inputFile, type, objective, extremeValue, Klist, Llist
   fullRes
 }
 
+#' Split an input file into discovery- and validation-cohorts
+#'
+#' @description
+#' Randomly (or deterministically) partitions the original GWAS input file
+#' into two equal halves and writes them back to disk.  The function is
+#' internal because it generates temporary artefacts, but documenting it
+#' makes unit–testing and maintenance easier.
+#'
+#' @param inputFile  String.  Path to the full dataset (CSV/TSV, possibly .gz).
+#' @param ext        File extension _including_ dot (default guesses from `inputFile`).
+#' @param type       `"CNF"` or `"DNF"`; passed through for book-keeping only.
+#' @param shuffle    Logical.  If `TRUE` (default) patients are split at random;
+#'                   otherwise the first half of rows form the discovery cohort.
+#' @param seed       Integer RNG seed used when `shuffle = TRUE`.
+#'
+#' @return `character(2)` – file names of the newly created discovery and
+#' validation files (in that order).
+#' @keywords internal
+#' @noRd
 splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -4)), type = "CNF", shuffle = FALSE, seed) {
   readFunction <- ifelse(ext == '.tsv', readr::read_tsv, readr::read_csv)
   inputTab <- readFunction(inputFile, col_types = readr::cols(ID = "c", .default = "l"))
@@ -143,6 +162,22 @@ splitFile = function(inputFile, ext = paste0("\\", stringr::str_sub(inputFile, -
   output
 }
 
+#' Validate a discovery phenotype on an external (hold-out) cohort
+#'
+#' Generates the composite phenotype in the validation set, computes association
+#' statistics and (optionally) writes summary tables to disk.
+#'
+#' @inheritParams mainDriver
+#' @param Formula  Character scalar containing the logical formula whose
+#'                 performance is to be evaluated.
+#' @param bestDiscovery  Integer. Index of the best single trait in discovery
+#'                       (used for performing a CMH test); is `NA` by default.
+#' @param SNP      Character.  Current genotype name, used to decorate
+#'                 output file names.
+#'
+#' @return A list with three tibbles: `phenotype`, `summary`, `associations`.
+#' @keywords internal
+#' @noRd
 generateValidationPhenotype = function(inputFile, Formula, type, objective = "agreement", K = 3, L = 3, bestDiscovery = NA,
                                        outputSummary = FALSE, outputPhenotype = FALSE, outputAssociations = FALSE, SNP = "") {
   ext <- stringr::str_sub(inputFile, -4)
