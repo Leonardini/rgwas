@@ -11,8 +11,8 @@ The goal of ReverseGWAS is to find associations between complex phenotypes and g
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/bichkd/rgwas}
-  \item Report bugs at \url{https://github.com/bichkd/rgwas/issues}
+  \item \url{https://github.com/Leonardini/rgwas}
+  \item Report bugs at \url{https://github.com/Leonardini/rgwas/issues}
 }
 
 }

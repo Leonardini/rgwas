@@ -47,6 +47,8 @@ mainDriver(
 }
 \value{
 A list containing a summary of the association statistics (one row per genotype) and the best combination phenotypes (one column per genotype).
+If outputSummary, outputPhenotype, or outputAssociations is \code{TRUE}, the function also creates an output file containing the summary, the phenotypes, or the single-best associations for each phenotype, respectively.
+If saveOutput is \code{TRUE}, the output is also saved as an RDS file.
 }
 \description{
 Main driver for a multi-genotype multi-phenotype association with a single type, number of clauses and clause size.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Driver.R
 \name{optimizingDriver}
 \alias{optimizingDriver}
-\title{Run \code{reverseGWAS} on an input dataset in full optimisation mode, i.e. to find the best association to within a given factor.}
+\title{Run \code{reverseGWAS} on an input dataset in full optimisation mode for a single genotype, i.e. to find the best association to within a given factor.}
 \usage{
 optimizingDriver(
   inputFile,
@@ -37,5 +37,5 @@ A list containing a summary of the association statistics (one row per genotype)
 Carry out the discovery-validation pipeline, whose arguments parallel those of the mainDriver and similar functions.
 }
 \examples{
-# Z <- optimizingDriver(inputFile = "TestInputN5000P5_3.csv", startPValue = log(1e-3))
+# Z <- optimizingDriver(inputFile = "TestInputN5000P5_1.csv", startPValue = log(1e-3))
 }
