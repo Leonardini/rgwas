@@ -129,13 +129,13 @@ There are three exported functions:
 
 All exported functions return both the summary statistics as well as the phenotype combination leading to the genotype-phenotype association(s).
 
-More specifically, a typical output includes, for each input genotypic variant, a summary tibble with the following fields:
+Specifically, a typical output includes, for each input genotypic variant, a summary tibble with the following fields:
 
 * SNP: the input genotypic variant             
 * time: the time (in seconds) required by the solver, or NA if not recorded           
 * gap: the optimality gap at termination (or NA if optimal or not recorded)
 * opt: the optimal value of the association statistic found (or NA if infeasible)            
-* status: the CPLEX solver status (one of "infeasible", "optimal", "feasible", "timeout", "nomemory" or "hopeless")          
+* status: the CPLEX solver status ("optimal", "feasible", "infeasible", "timeout", "nomemory" or "hopeless")          
 * formula: the formula representing the phenotype combination       
 * TP, FP, FN, TN: the number of true positives, false positives, false negatives, and true negatives           
 * numSegments: the number of segments used to represent the $p$-value boundary
